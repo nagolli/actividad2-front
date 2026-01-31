@@ -2,7 +2,8 @@
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
   "version": 1,
   "cli": {
-    "packageManager": "npm"
+    "packageManager": "npm",
+    "analytics": "56b720ff-3b9f-4642-a051-89f6c9373aba"
   },
   "newProjectRoot": "projects",
   "projects": {
@@ -21,7 +22,13 @@
             "assets": [
               {
                 "glob": "**/*",
-                "input": "public"
+                "input": "public",
+                "output": "."
+              },
+              {
+                "glob": "**/*",
+                "input": "src/assets",
+                "output": "assets"
               }
             ],
             "styles": [
@@ -59,7 +66,8 @@
               "buildTarget": "actividad2-front:build:production"
             },
             "development": {
-              "buildTarget": "actividad2-front:build:development"
+              "buildTarget": "actividad2-front:build:development",
+              "port": 8001
             }
           },
           "defaultConfiguration": "development"
