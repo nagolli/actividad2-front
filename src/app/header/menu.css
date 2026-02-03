@@ -1,0 +1,64 @@
+/* CONTENEDOR DEL MENÚ */
+:host ::ng-deep .p-menu {
+    background: #fbfbf4;
+    /* fondo claro */
+    border: 3px solid #3f3a1a;
+    /* verde oscuro */
+    border-radius: 16px;
+    padding: 0.75rem 0;
+    width: max-content;
+    min-width: unset;
+
+    box-shadow: none;
+}
+
+/* DESPLAZAMIENTO DEL OVERLAY */
+:host ::ng-deep .p-menu-overlay {
+    margin-top: 1.75rem;
+    /* abajo */
+    margin-right: 1.0rem;
+    margin-left: 1.0rem;
+    /* derecha */
+}
+
+/* LISTA */
+:host ::ng-deep .p-menu-list {
+    padding: 0;
+}
+
+/* ITEMS */
+:host ::ng-deep .p-menuitem {
+    margin: 0.25rem 0;
+}
+
+/* LINKS */
+:host ::ng-deep .p-menu-item-label {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+
+    padding: 0.5rem 0.5rem;
+    border-radius: 12px;
+
+    color: #3f3a1a;
+    font-size: 1.2rem;
+    font-weight: 500;
+
+    transition: background-color 0.2s ease;
+}
+
+/* ICONOS */
+:host ::ng-deep .p-menu-item-icon {
+    font-size: 1.6rem;
+    color: #3f3a1a;
+}
+
+/* HOVER */
+:host ::ng-deep .p-menu-item-link:hover {
+    background-color: #eaf2d8;
+}
+
+/* QUITAR ESTILO OSCURO POR DEFECTO */
+:host ::ng-deep .p-menu-item-link:focus {
+    box-shadow: none;
+}
