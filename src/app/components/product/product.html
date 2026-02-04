@@ -1,0 +1,52 @@
+<div class="product-container">
+  <div class="view-toggle">
+    <p-button 
+      [icon]="isGridView() ? 'pi pi-list' : 'pi pi-th-large'"
+      (onClick)="toggleView()"
+      [text]="true"
+      [rounded]="true"
+    />
+  </div>
+
+  @if (isGridView()) {
+    <div class="products-grid">
+      @for (product of products(); track product.id) {
+        <p-card class="product-card" (click)="onProductClick(product)">
+          <ng-template pTemplate="header">
+            <p-avatar 
+              [image]="product.image" 
+              shape="square"
+              size="xlarge"
+              [style]="{'width': '100%', 'height': '250px'}"
+              styleClass="w-full"
+            />
+          </ng-template>
+          
+          <div class="product-info">
+            <div class="product-name">{{ product.name }}</div>
+            <span class="product-price">${{ product.price }}</span>
+          </div>
+        </p-card>
+      }
+    </div>
+  } @else {
+    <div class="products-list">
+      @for (product of products(); track product.id) {
+        <p-card class="product-list-item" (click)="onProductClick(product)">
+          <div class="list-item-content">
+            <p-avatar 
+              [image]="product.image" 
+              shape="square"
+              size="large"
+            />
+            <div class="list-item-info">
+              <div class="product-name">{{ product.name }}</div>
+              <p class="product-description">{{ product.description }}</p>
+            </div>
+            <div class="list-item-price">{{ product.price }}</div>
+          </div>
+        </p-card>
+      }
+    </div>
+  }
+</div>
