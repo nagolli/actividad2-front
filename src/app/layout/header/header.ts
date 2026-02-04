@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { InputText } from 'primeng/inputtext';
-import { MenuComponent } from './menu';
+import { MenuComponent } from '../menu/menu';
 
 @Component({
   selector: 'app-header',

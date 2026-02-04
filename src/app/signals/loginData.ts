@@ -23,15 +23,7 @@ export interface LoginData {
     permissions: { permissionId: Permission, level: PermissionLevel }[];
 }
 
-export const loginDataSignal = signal<LoginData | null>({
-    userId: 1,
-    isClient: false,
-    isEmployee: true,
-    permissions: [
-        { permissionId: Permission.roles, level: PermissionLevel.advanced },
-        { permissionId: Permission.productos, level: PermissionLevel.advanced },
-    ]
-});
+export const loginDataSignal = signal<LoginData | null>(null);
 
 export function hasEmployeePermission(permission: Permission, requiredLevel: PermissionLevel): boolean {
     const loginData = loginDataSignal();

@@ -1,17 +1,16 @@
-import { Component, effect, ViewChild } from '@angular/core';
+import { Component, effect, inject, ViewChild } from '@angular/core';
 import { MenuModule } from 'primeng/menu';
 import { MenuItem } from 'primeng/api';
 import { Menu } from 'primeng/menu';
 import { hasEmployeePermission, isClient, loggedIn, loginDataSignal, notLoggedIn, Permission, PermissionLevel } from '../../signals/loginData';
+import { LoginService } from '../../components/usersManagement/login/login.service';
 
 @Component({
   selector: 'app-user-menu',
   standalone: true,
   styleUrls: ['./menu.css'],
   imports: [MenuModule],
-  template: ` 
-  <p-menu #menu [model]="items" popup></p-menu>
-   `
+  templateUrl: './menu.html'
 })
 export class MenuComponent {
   @ViewChild('menu') menu!: Menu;
@@ -19,6 +18,7 @@ export class MenuComponent {
 
   constructor() {
     effect(() => {
+      console.log('Login data changed:', loginDataSignal());
       loginDataSignal(); // Suscribirse a cambios en loginDataSignal
       this.items = [
         notLoggedIn() && { label: 'Iniciar sesión', icon: 'fa-solid fa-right-to-bracket', command: () => this.login() },
@@ -36,10 +36,12 @@ export class MenuComponent {
     });
   }
 
+  private readonly loginService = inject(LoginService);
 
   login() {
     console.log('Ir a login, Bloque 1');
-    // Navegar
+    //Navegar
+    this.loginService.login('admin@example.com', 'admin');
   }
 
   logout() {
