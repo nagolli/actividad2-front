@@ -5,6 +5,19 @@
   padding: 1.5rem;
 }
 
+.spinner-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
 .product-card {
   cursor: pointer;
   transition: all 0.3s ease;
@@ -125,6 +138,30 @@
   margin-top: 0.35rem;
 }
 
+.filter-actions {
+  display: flex;
+  align-items: center;
+  padding-bottom: 0;
+  align-self: center;
+}
+
+.filter-button {
+  background: #AEC8A4;
+  border: 1px solid #AEC8A4;
+  color: #FFFFFF;
+  font-family: 'PT Sans Narrow', sans-serif;
+  font-size: 1rem;
+  padding: 0.6rem 1.2rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.filter-button:hover {
+  background: #3B3B1A;
+  border-color: #3B3B1A;
+}
+
 .price-range ::ng-deep .p-slider {
   background: #AEC8A4;
 }
@@ -213,4 +250,17 @@
   color: rgba(59, 59, 26, 0.6);
   min-width: 100px;
   text-align: right;
+}
+
+.no-products {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 4rem;
+}
+
+.no-products p {
+  font-size: 1.35rem;
+  font-weight: 600;
+  color: #3B3B1A;
 }

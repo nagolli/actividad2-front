@@ -1,7 +1,7 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { ProductService } from './product.service';
-import { PriceRange, Product } from './product.models';
+import { PriceRange, Product, ProductFilters } from './product.models';
 import { CardModule } from 'primeng/card';
 import { AvatarModule } from 'primeng/avatar';
 import { ButtonModule } from 'primeng/button';
@@ -11,6 +11,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { SelectModule } from 'primeng/select';
 import { SelectOption } from '../../shared/models/select-option.model';
 import { SelectOptionService } from '../../shared/services/select-option.service';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
 @Component({
   selector: 'app-product',
@@ -25,7 +26,8 @@ import { SelectOptionService } from '../../shared/services/select-option.service
     ReactiveFormsModule,
     SliderModule,
     InputTextModule,
-    SelectModule
+    SelectModule,
+    ProgressSpinnerModule
   ]
 })
 export class ProductComponent implements OnInit {
@@ -40,6 +42,7 @@ export class ProductComponent implements OnInit {
   protected readonly supplierOptions = signal<SelectOption[]>([]);
   protected readonly priceRange = signal<PriceRange>({ min: 0, max: 500 });
   protected readonly priceRangeLoaded = signal<boolean>(false);
+  protected readonly isLoading = signal<boolean>(false);
 
   protected readonly filtersForm = new FormGroup({
     name: new FormControl('', { nonNullable: true }),
@@ -84,6 +87,23 @@ export class ProductComponent implements OnInit {
 
   toggleView() {
     this.isGridView.update(value => !value);
+  }
+
+  onSearch() {
+    const formValue = this.filtersForm.getRawValue();
+    const filters: ProductFilters = {
+      name: formValue.name,
+      category: Number(formValue.category),
+      supplier: Number(formValue.supplier),
+      min: formValue.priceRange[0],
+      max: formValue.priceRange[1]
+    };
+    
+    this.isLoading.set(true);
+    this.productService.filter(filters).subscribe(products => {
+      this.products.set(products);
+      this.isLoading.set(false);
+    });
   }
 
 }

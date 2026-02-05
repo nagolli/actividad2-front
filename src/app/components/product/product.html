@@ -1,4 +1,9 @@
 <div class="product-container">
+  @if (isLoading()) {
+    <div class="spinner-overlay">
+      <p-progressSpinner ariaLabel="Cargando productos"></p-progressSpinner>
+    </div>
+  }
   <div class="product-toolbar">
     <form class="filters" [formGroup]="filtersForm" role="search" aria-label="Filtros de productos">
       <div class="filter-field">
@@ -39,6 +44,9 @@
             </div>
           }
       </div>
+      <div class="filter-actions">
+        <button (click)="onSearch()" class="filter-button">Buscar</button>
+      </div>
     </form>
     <div class="view-toggle">
       <button class="view-toggle-btn" (click)="toggleView()">
@@ -46,7 +54,7 @@
       </button>
     </div>
   </div>
-
+@if(products().length > 0) {
   @if (isGridView()) {
     <div class="products-grid">
       @for (product of products(); track product.id) {
@@ -88,4 +96,9 @@
       }
     </div>
   }
+} @else {
+  <div class="no-products">
+    <p>No hay productos para mostrar</p>
+  </div>
+}
 </div>

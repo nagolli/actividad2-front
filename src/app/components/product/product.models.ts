@@ -16,3 +16,11 @@ export interface PriceRange {
   min: number;
   max: number;
 }
+
+export interface ProductFilters {
+  name: string;
+  category: number;
+  supplier: number;
+  min: number;
+  max: number;
+}
