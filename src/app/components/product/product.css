@@ -8,7 +8,6 @@
 .product-card {
   cursor: pointer;
   transition: all 0.3s ease;
-  background-color: #FFFFFF;
   border: 1px solid #E0E0E0;
 }
 
@@ -86,8 +85,7 @@
 .filter-field .filter-input,
 .filter-field .filter-input .p-select-label,
 .filter-field .p-inputtext {
-  background-color: #FFFFFF;
-  border: 1px solid #E0E0E0;
+  border: 1px solid #3B3B1A;
   color: #3B3B1A;
   padding: 0.6rem 0.8rem;
   border-radius: 6px;
@@ -182,7 +180,6 @@
 .product-list-item {
   cursor: pointer;
   transition: all 0.3s ease;
-  background-color: #FFFFFF;
   border: 1px solid #E0E0E0;
 }
 

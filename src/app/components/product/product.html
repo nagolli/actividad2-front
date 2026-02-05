@@ -8,11 +8,10 @@
       <div class="filter-field">
         <label for="filter-category">Categoría</label>
         <p-select
+          appendTo="body"
           inputId="filter-category"
           formControlName="category"
           [options]="categoryOptions()"
-          optionLabel="label"
-          optionValue="value"
           placeholder="Todas"
           [showClear]="true"
           class="filter-input"
@@ -21,11 +20,10 @@
       <div class="filter-field">
         <label for="filter-supplier">Proveedor</label>
         <p-select
+          appendTo="body"
           inputId="filter-supplier"
           formControlName="supplier"
           [options]="supplierOptions()"
-          optionLabel="label"
-          optionValue="value"
           placeholder="Todos"
           [showClear]="true"
           class="filter-input"
@@ -33,7 +31,7 @@
       </div>
       <div class="filter-field price-range">
         <label>Precio</label>
-        <p-slider formControlName="priceRange" [range]="true" [min]="minPrice" [max]="maxPrice" ariaLabel="Rango de precio"></p-slider>
+        <p-slider formControlName="priceRange" [range]="true" class="custom-slider" [min]="minPrice" [max]="maxPrice" ariaLabel="Rango de precio"></p-slider>
         <div class="range-values">
           <span>{{ filtersForm.controls.priceRange.value?.[0] }} €</span>
           <span>{{ filtersForm.controls.priceRange.value?.[1] }} €</span>
