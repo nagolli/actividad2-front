@@ -31,11 +31,13 @@
       </div>
       <div class="filter-field price-range">
         <label>Precio</label>
-        <p-slider formControlName="priceRange" [range]="true" class="custom-slider" [min]="minPrice" [max]="maxPrice" ariaLabel="Rango de precio"></p-slider>
-        <div class="range-values">
-          <span>{{ filtersForm.controls.priceRange.value?.[0] }} €</span>
-          <span>{{ filtersForm.controls.priceRange.value?.[1] }} €</span>
-        </div>
+          @if (priceRangeLoaded()) {
+            <p-slider formControlName="priceRange" [range]="true" [min]="priceRange().min" [max]="priceRange().max" ariaLabel="Rango de precio"></p-slider>
+            <div class="range-values">
+              <span>{{ filtersForm.controls.priceRange.value[0] }} €</span>
+              <span>{{ filtersForm.controls.priceRange.value[1] }} €</span>
+            </div>
+          }
       </div>
     </form>
     <div class="view-toggle">

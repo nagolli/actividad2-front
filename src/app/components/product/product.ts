@@ -1,7 +1,7 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { ProductService } from './product.service';
-import { Product } from './product.model';
+import { PriceRange, Product } from './product.models';
 import { CardModule } from 'primeng/card';
 import { AvatarModule } from 'primeng/avatar';
 import { ButtonModule } from 'primeng/button';
@@ -38,17 +38,20 @@ export class ProductComponent implements OnInit {
   protected readonly maxPrice = 500;
   protected readonly categoryOptions = signal<SelectOption[]>([]);
   protected readonly supplierOptions = signal<SelectOption[]>([]);
+  protected readonly priceRange = signal<PriceRange>({ min: 0, max: 500 });
+  protected readonly priceRangeLoaded = signal<boolean>(false);
 
   protected readonly filtersForm = new FormGroup({
     name: new FormControl('', { nonNullable: true }),
     category: new FormControl('', { nonNullable: true }),
     supplier: new FormControl('', { nonNullable: true }),
-    priceRange: new FormControl<[number, number]>([0, 500], { nonNullable: true })
+    priceRange: new FormControl<[number, number]>([this.priceRange().min, this.priceRange().max], { nonNullable: true })
   });
 
   ngOnInit(): void {
     this.loadOptions();
     this.loadProducts();
+    this.loadPriceRange();
   }
 
   loadOptions() {
@@ -64,6 +67,14 @@ export class ProductComponent implements OnInit {
   loadProducts() {
     this.productService.getProducts().subscribe(products => {
       this.products.set(products);
+    });
+  }
+
+  loadPriceRange() {
+    this.productService.getPriceRange().subscribe(priceRange => {
+      this.priceRange.set(priceRange);
+      this.filtersForm.controls.priceRange.setValue([priceRange.min, priceRange.max]);
+      this.priceRangeLoaded.set(true);
     });
   }
 

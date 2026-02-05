@@ -11,3 +11,8 @@ export interface Product {
   categoryId: number;
   supplierId: number;
 }
+
+export interface PriceRange {
+  min: number;
+  max: number;
+}
