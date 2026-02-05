@@ -30,7 +30,7 @@
 
 .icon-link {
     color: #3B3B1A;
-    font-size: 1rem;
+    font-size: 1.5rem;
     transition: color 0.3s ease;
     text-decoration: none;
 }
@@ -50,7 +50,7 @@
 }
 
 .icon-link-container i {
-    font-size: 1rem;
+    font-size: 1.5rem;
 }
 
 .icon-link-container:hover {
@@ -58,7 +58,7 @@
 }
 
 .icon-label {
-    font-size: 0.4rem;
+    font-size: 0.6rem;
     font-family: 'Titan One', cursive;
     text-align: center;
 }
@@ -85,11 +85,11 @@
     background-color: #F6F6F2;
     border: 0.5px solid #3B3B1A;
     color: #3B3B1A;
-    padding: 0.1rem 0.3rem;
+    padding: 0.5rem 0.75rem;
     border-radius: 3px;
     font-family: 'PT Sans Narrow', sans-serif;
-    font-size: 0.6rem;
-    width: 70px;
+    font-size: 1rem;
+    width: 150px;
     transition: all 0.3s ease;
 }
 
@@ -108,7 +108,7 @@
     border: none;
     color: #3B3B1A;
     padding: 0;
-    font-size: 0.75rem;
+    font-size: 1.35rem;
     cursor: pointer;
     transition: all 0.3s ease;
 }
