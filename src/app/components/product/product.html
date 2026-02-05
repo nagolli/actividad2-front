@@ -1,0 +1,104 @@
+<div class="product-container">
+  @if (isLoading()) {
+    <div class="spinner-overlay">
+      <p-progressSpinner ariaLabel="Cargando productos"></p-progressSpinner>
+    </div>
+  }
+  <div class="product-toolbar">
+    <form class="filters" [formGroup]="filtersForm" role="search" aria-label="Filtros de productos">
+      <div class="filter-field">
+        <label for="filter-name">Nombre</label>
+        <input id="filter-name" pInputText type="text" placeholder="Nombre" formControlName="name" class="filter-input" />
+      </div>
+      <div class="filter-field">
+        <label for="filter-category">Categoría</label>
+        <p-select
+          appendTo="body"
+          inputId="filter-category"
+          formControlName="category"
+          [options]="categoryOptions()"
+          placeholder="Todas"
+          [showClear]="true"
+          class="filter-input"
+        ></p-select>
+      </div>
+      <div class="filter-field">
+        <label for="filter-supplier">Proveedor</label>
+        <p-select
+          appendTo="body"
+          inputId="filter-supplier"
+          formControlName="supplier"
+          [options]="supplierOptions()"
+          placeholder="Todos"
+          [showClear]="true"
+          class="filter-input"
+        ></p-select>
+      </div>
+      <div class="filter-field price-range">
+        <label>Precio</label>
+          @if (priceRangeLoaded()) {
+            <p-slider formControlName="priceRange" [range]="true" [min]="priceRange().min" [max]="priceRange().max" ariaLabel="Rango de precio"></p-slider>
+            <div class="range-values">
+              <span>{{ filtersForm.controls.priceRange.value[0] }} €</span>
+              <span>{{ filtersForm.controls.priceRange.value[1] }} €</span>
+            </div>
+          }
+      </div>
+      <div class="filter-actions">
+        <button (click)="onSearch()" class="filter-button">Buscar</button>
+      </div>
+    </form>
+    <div class="view-toggle">
+      <button class="view-toggle-btn" (click)="toggleView()">
+        <i [class]="isGridView() ? 'pi pi-list' : 'pi pi-th-large'"></i>
+      </button>
+    </div>
+  </div>
+@if(products().length > 0) {
+  @if (isGridView()) {
+    <div class="products-grid">
+      @for (product of products(); track product.id) {
+        <p-card class="product-card" (click)="onProductClick(product)">
+          <ng-template pTemplate="header">
+            <p-avatar 
+              [image]="product.image" 
+              shape="square"
+              size="xlarge"
+              [style]="{'width': '100%', 'height': '250px'}"
+            />
+          </ng-template>
+          
+          <div class="product-info">
+            <div class="product-name">{{ product.name }}</div>
+            <span class="product-price">{{ product.price }} €</span>
+          </div>
+        </p-card>
+      }
+    </div>
+  } @else {
+    <div class="products-list">
+      @for (product of products(); track product.id) {
+        <p-card class="product-list-item" (click)="onProductClick(product)">
+          <div class="list-item-content">
+            <p-avatar 
+              [image]="product.image" 
+              shape="square"
+              size="large"
+              [style]="{'width': '80px', 'height': '80px'}"
+            />
+            <div class="list-item-info">
+              <div class="product-name">{{ product.name }}</div>
+              <p class="product-description">{{ product.description }}</p>
+            </div>
+            <div class="list-item-price">{{ product.price }} €</div>
+          </div>
+        </p-card>
+      }
+    </div>
+  }
+} @else {
+  <div class="no-products">
+    <p>No hay productos para mostrar</p>
+  </div>
+}
+</div>

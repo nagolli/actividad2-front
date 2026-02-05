@@ -3,4 +3,7 @@ body {
 	background-color: #F6F6F2;
 	margin: 0;
 }
-/* You can add global styles to this file, and also import other style files */
+
+.p-slider-handle::before {
+  --p-slider-handle-content-background: #3B3B1A;
+}
