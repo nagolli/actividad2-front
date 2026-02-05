@@ -46,12 +46,12 @@ export function hasEmployeePermission(permission: Permission, requiredLevel: Per
 
 export function isClient(): boolean {
     const loginData = loginDataSignal();
-    return loginData !== null && loginData.isClient;
+    return loginData?.isClient ?? false;
 }
 
 export function getClientId(): number | null {
     const loginData = loginDataSignal();
-    return loginData !== null && loginData.isClient ? loginData.userId : null;
+    return loginData?.isClient ? loginData.userId : null;
 }
 
 export function notLoggedIn(): boolean {

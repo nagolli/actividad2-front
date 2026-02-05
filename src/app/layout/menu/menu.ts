@@ -4,6 +4,7 @@ import { MenuItem } from 'primeng/api';
 import { Menu } from 'primeng/menu';
 import { hasEmployeePermission, isClient, loggedIn, loginDataSignal, notLoggedIn, Permission, PermissionLevel } from '../../signals/loginData';
 import { LoginService } from '../../components/usersManagement/login/login.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-user-menu',
@@ -16,7 +17,7 @@ export class MenuComponent {
   @ViewChild('menu') menu!: Menu;
   items: MenuItem[] = [];
 
-  constructor() {
+  constructor(private router: Router) {
     effect(() => {
       console.log('Login data changed:', loginDataSignal());
       loginDataSignal(); // Suscribirse a cambios en loginDataSignal
@@ -41,7 +42,7 @@ export class MenuComponent {
   login() {
     console.log('Ir a login, Bloque 1');
     //Navegar
-    this.loginService.login('admin@example.com', 'admin');
+    this.router.navigate(['/login']);
   }
 
   logout() {

@@ -1,0 +1,43 @@
+<div class="login-wrapper">
+    <p-card header="Inicio de sesión" styleClass="login-card">
+        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+
+            <!-- E-mail -->
+            <div class="field">
+                <label for="email">E-mail</label>
+                <input id="email" type="email" pInputText formControlName="email" placeholder="email@email.com" />
+                <small *ngIf="email.invalid && (email.dirty || email.touched)" class="p-error">
+                    El e-mail no es válido.
+                </small>
+            </div>
+
+            <!-- Contraseña -->
+            <div class="field">
+                <label for="password">Contraseña</label>
+
+                <div class="p-inputgroup">
+                    <input id="password" [type]="showPassword ? 'text' : 'password'" pInputText
+                        formControlName="password" />
+                    <button type="button" pButton class="p-button-text p-button-plain" (click)="togglePassword()"
+                        [icon]="showPassword ? 'pi pi-eye-slash' : 'pi pi-eye'"></button>
+                </div>
+
+                <small *ngIf="password.invalid && (password.dirty || password.touched)" class="p-error">
+                    La contraseña es obligatoria.
+                </small>
+            </div>
+
+            <!-- Botón Iniciar sesión -->
+            <button pButton type="submit" label="Iniciar Sesión" class="p-button-success w-full"
+                [disabled]="loginForm.invalid"></button>
+            <div *ngIf="loginError" class="p-error" style="margin-top: 1rem;"> Credenciales incorrectas. Inténtalo de
+                nuevo. </div>
+        </form>
+
+        <!-- Enlaces inferiores -->
+        <div class="login-links">
+            <a (click)="onForgotPassword()">¿Ha olvidado la contraseña?</a>
+            <span>¿Aún no está registrado? <a (click)="onRegister()">Registrarse</a></span>
+        </div>
+    </p-card>
+</div>
