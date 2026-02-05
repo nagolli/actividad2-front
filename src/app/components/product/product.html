@@ -1,8 +1,50 @@
 <div class="product-container">
-  <div class="view-toggle">
-    <button class="view-toggle-btn" (click)="toggleView()">
-      <i [class]="isGridView() ? 'pi pi-list' : 'pi pi-th-large'"></i>
-    </button>
+  <div class="product-toolbar">
+    <form class="filters" [formGroup]="filtersForm" role="search" aria-label="Filtros de productos">
+      <div class="filter-field">
+        <label for="filter-name">Nombre</label>
+        <input id="filter-name" pInputText type="text" placeholder="Nombre" formControlName="name" class="filter-input" />
+      </div>
+      <div class="filter-field">
+        <label for="filter-category">Categoría</label>
+        <p-select
+          inputId="filter-category"
+          formControlName="category"
+          [options]="categoryOptions()"
+          optionLabel="label"
+          optionValue="value"
+          placeholder="Todas"
+          [showClear]="true"
+          class="filter-input"
+        ></p-select>
+      </div>
+      <div class="filter-field">
+        <label for="filter-supplier">Proveedor</label>
+        <p-select
+          inputId="filter-supplier"
+          formControlName="supplier"
+          [options]="supplierOptions()"
+          optionLabel="label"
+          optionValue="value"
+          placeholder="Todos"
+          [showClear]="true"
+          class="filter-input"
+        ></p-select>
+      </div>
+      <div class="filter-field price-range">
+        <label>Precio</label>
+        <p-slider formControlName="priceRange" [range]="true" [min]="minPrice" [max]="maxPrice" ariaLabel="Rango de precio"></p-slider>
+        <div class="range-values">
+          <span>{{ filtersForm.controls.priceRange.value?.[0] }} €</span>
+          <span>{{ filtersForm.controls.priceRange.value?.[1] }} €</span>
+        </div>
+      </div>
+    </form>
+    <div class="view-toggle">
+      <button class="view-toggle-btn" (click)="toggleView()">
+        <i [class]="isGridView() ? 'pi pi-list' : 'pi pi-th-large'"></i>
+      </button>
+    </div>
   </div>
 
   @if (isGridView()) {
