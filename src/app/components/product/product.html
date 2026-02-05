@@ -1,11 +1,8 @@
 <div class="product-container">
   <div class="view-toggle">
-    <p-button 
-      [icon]="isGridView() ? 'pi pi-list' : 'pi pi-th-large'"
-      (onClick)="toggleView()"
-      [text]="true"
-      [rounded]="true"
-    />
+    <button class="view-toggle-btn" (click)="toggleView()">
+      <i [class]="isGridView() ? 'pi pi-list' : 'pi pi-th-large'"></i>
+    </button>
   </div>
 
   @if (isGridView()) {
@@ -18,13 +15,12 @@
               shape="square"
               size="xlarge"
               [style]="{'width': '100%', 'height': '250px'}"
-              styleClass="w-full"
             />
           </ng-template>
           
           <div class="product-info">
             <div class="product-name">{{ product.name }}</div>
-            <span class="product-price">${{ product.price }}</span>
+            <span class="product-price">{{ product.price }} €</span>
           </div>
         </p-card>
       }
@@ -38,12 +34,13 @@
               [image]="product.image" 
               shape="square"
               size="large"
+              [style]="{'width': '80px', 'height': '80px'}"
             />
             <div class="list-item-info">
               <div class="product-name">{{ product.name }}</div>
               <p class="product-description">{{ product.description }}</p>
             </div>
-            <div class="list-item-price">{{ product.price }}</div>
+            <div class="list-item-price">{{ product.price }} €</div>
           </div>
         </p-card>
       }

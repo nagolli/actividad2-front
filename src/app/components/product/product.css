@@ -8,6 +8,8 @@
 .product-card {
   cursor: pointer;
   transition: all 0.3s ease;
+  background-color: #FFFFFF;
+  border: 1px solid #E0E0E0;
 }
 
 .product-card:hover {
@@ -29,15 +31,16 @@
 }
 
 .product-name {
-  font-size: 1.125rem;
+  font-size: 1.35rem;
   font-weight: 600;
   flex: 1;
+  color: #3B3B1A;
 }
 
 .product-price {
-  font-size: 1.25rem;
+  font-size: 1.1rem;
   font-weight: bold;
-  color: #2563eb;
+  color: rgba(59, 59, 26, 0.6);
   white-space: nowrap;
 }
 
@@ -51,6 +54,27 @@
   justify-content: flex-end;
 }
 
+.view-toggle-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0.75rem;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.view-toggle-btn:hover {
+  background-color: rgba(59, 59, 26, 0.1);
+}
+
+.view-toggle-btn i {
+  color: #3B3B1A;
+  font-size: 1.5rem;
+}
+
 .products-list {
   display: flex;
   flex-direction: column;
@@ -60,6 +84,8 @@
 .product-list-item {
   cursor: pointer;
   transition: all 0.3s ease;
+  background-color: #FFFFFF;
+  border: 1px solid #E0E0E0;
 }
 
 .product-list-item:hover {
@@ -78,7 +104,7 @@
 }
 
 .product-description {
-  font-size: 0.875rem;
+  font-size: 1rem;
   color: #666;
   margin-top: 0.5rem;
   overflow: hidden;
@@ -87,13 +113,9 @@
 }
 
 .list-item-price {
-  font-size: 1.5rem;
+  font-size: 1.3rem;
   font-weight: bold;
-  color: #2563eb;
+  color: rgba(59, 59, 26, 0.6);
   min-width: 100px;
   text-align: right;
-}
-
-.view-toggle-btn .pi {
-  color: #3B3B1A;
 }
