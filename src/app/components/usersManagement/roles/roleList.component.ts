@@ -9,7 +9,7 @@ import { RoleService } from './role.service';
 @Component({
     selector: 'app-roles-list',
     templateUrl: './roleList.html',
-    styleUrls: ['./roleList.css', '../../../shared/styles/searchContainer.css'],
+    styleUrls: ['./roleList.css', '../../../shared/styles/cardContainer.css', '../../../shared/styles/searchContainer.css'],
     standalone: true,
     imports: [CommonModule, FormsModule, RoleItemComponent, ButtonModule]
 })

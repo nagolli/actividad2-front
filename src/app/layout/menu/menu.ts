@@ -45,6 +45,7 @@ export class MenuComponent {
   logout() {
     setTimeout(() => {
       loginDataSignal.set(null);
+      this.router.navigate(['/']);
     }, 100);
   }
 

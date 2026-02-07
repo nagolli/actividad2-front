@@ -1,6 +1,9 @@
-<div class="login-wrapper">
-    <p-card header="Inicio de sesión" styleClass="login-card">
-        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+<div class="login-list-container">
+    <div class="login-card">
+        <span class="login-title">
+            Inicio de sesión
+        </span>
+        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
 
             <!-- E-mail -->
             <div class="field">
@@ -15,11 +18,12 @@
             <div class="field">
                 <label for="password">Contraseña</label>
 
-                <div class="p-inputgroup">
+                <div class="password-wrapper">
                     <input id="password" [type]="showPassword ? 'text' : 'password'" pInputText
                         formControlName="password" />
-                    <button type="button" pButton class="p-button-text p-button-plain" (click)="togglePassword()"
-                        [icon]="showPassword ? 'pi pi-eye-slash' : 'pi pi-eye'"></button>
+                    <button type="button" pButton class="toggle-password" (click)="togglePassword()"
+                        [icon]="showPassword ? 'pi pi-eye-slash' : 'pi pi-eye'">
+                    </button>
                 </div>
 
                 <small *ngIf="password.invalid && (password.dirty || password.touched)" class="p-error">
@@ -27,8 +31,9 @@
                 </small>
             </div>
 
+
             <!-- Botón Iniciar sesión -->
-            <button pButton type="submit" label="Iniciar Sesión" class="p-button-success w-full"
+            <button pButton type="submit" label="Iniciar Sesión" class="w-full btn-other"
                 [disabled]="loginForm.invalid"></button>
             <div *ngIf="loginError" class="p-error" style="margin-top: 1rem;"> Credenciales incorrectas. Inténtalo de
                 nuevo. </div>
@@ -39,5 +44,5 @@
             <a (click)="onForgotPassword()">¿Ha olvidado la contraseña?</a>
             <span>¿Aún no está registrado? <a (click)="onRegister()">Registrarse</a></span>
         </div>
-    </p-card>
+    </div>
 </div>

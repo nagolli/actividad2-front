@@ -10,6 +10,7 @@ import { LoginService } from './login.service';
 @Component({
     selector: 'app-login',
     templateUrl: './login.html',
+    styleUrls: ['./login.css', '../../../shared/styles/cardContainer.css'],
     imports: [
         CommonModule,
         ReactiveFormsModule,
