@@ -51,16 +51,13 @@ export class LoginComponent {
         this.loginService.login(items.email, items.password).subscribe({
             next: (response: any) => {
                 if (response) {
-                    console.log('Login correcto',);
                     this.router.navigate(['/product']);
                 } else {
-                    console.log('Login incorrecto');
                     this.loginError = true;
                     this.loginForm.reset();
                 }
             },
             error: (err: any) => {
-                console.error('Error en login:', err);
                 this.loginError = true;
                 this.loginForm.reset();
             }

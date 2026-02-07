@@ -5,7 +5,7 @@ import { MenuComponent } from '../menu/menu';
 @Component({
   selector: 'app-header',
   templateUrl: './header.html',
-  styleUrl: './header.css',
+  styleUrls: ['./header.css', '../../shared/styles/searchContainer.css'],
   standalone: true,
   imports: [InputText, MenuComponent]
 })

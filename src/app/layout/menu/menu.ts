@@ -19,7 +19,6 @@ export class MenuComponent {
 
   constructor(private router: Router) {
     effect(() => {
-      console.log('Login data changed:', loginDataSignal());
       loginDataSignal(); // Suscribirse a cambios en loginDataSignal
       this.items = [
         notLoggedIn() && { label: 'Iniciar sesión', icon: 'fa-solid fa-right-to-bracket', command: () => this.login() },
@@ -40,8 +39,6 @@ export class MenuComponent {
   private readonly loginService = inject(LoginService);
 
   login() {
-    console.log('Ir a login, Bloque 1');
-    //Navegar
     this.router.navigate(['/login']);
   }
 
@@ -62,8 +59,7 @@ export class MenuComponent {
   }
 
   manageRoles() {
-    console.log('Ir a gestionar roles, Bloque 1');
-    // Navegar
+    this.router.navigate(['/roles']);
   }
 
   manageEmployees() {

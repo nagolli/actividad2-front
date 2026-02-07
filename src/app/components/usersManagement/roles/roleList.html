@@ -1,0 +1,14 @@
+<div class="roles-list-container">
+    <div class="roles-header">
+        <div class="search-container">
+            <input pInputText type="text" placeholder="Buscar" [(ngModel)]="searchTerm" />
+        </div>
+        <span class="roles-title">{{ tableName }}</span>
+        <p-button label="Añadir rol" styleClass="add-button" icon="pi pi-plus"></p-button>
+    </div>
+
+    <div class="roles-list">
+        <app-role-item *ngFor="let role of filteredRoles" [name]="role.name" [description]="role.description()"
+            (edit)="onEdit(role)" (delete)="onDelete(role)"></app-role-item>
+    </div>
+</div>
