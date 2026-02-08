@@ -24,3 +24,24 @@
         </ng-container>
     </div>
 </div>
+
+<p-dialog class="dialog" header="Seleccione rol para sustituir" [(visible)]="showReplaceModal" [modal]="true"
+    [closable]="true" [style]="{ width: '350px' }">
+
+    <div class="p-fluid chooser">
+        <label for="roleSelect">Nuevo rol</label>
+        <p-select id="roleSelect" [options]="remainingRoles()" optionLabel="name" optionValue="id"
+            [(ngModel)]="selectedRoleId" placeholder="Selecciona un rol" [filter]="true" appendTo="body">
+        </p-select>
+    </div>
+
+    <ng-template pTemplate="footer">
+        <p-button label="Cancelar" styleClass="btn-cancel" (onClick)="showReplaceModal = false">
+        </p-button>
+
+        <p-button label="Reemplazar y borrar" styleClass="btn-submit" [disabled]="!selectedRoleId"
+            (onClick)="confirmDelete()">
+        </p-button>
+    </ng-template>
+
+</p-dialog>

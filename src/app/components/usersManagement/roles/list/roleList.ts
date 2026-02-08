@@ -6,6 +6,8 @@ import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { PostRole, Role } from '../roleInterfaces';
 import { RoleService } from '../role.service';
+import { DialogModule } from 'primeng/dialog';
+import { SelectModule } from 'primeng/select';
 import { Permission, PermissionLevel, hasEmployeePermission } from '../../../../signals/loginData';
 
 @Component({
@@ -13,7 +15,7 @@ import { Permission, PermissionLevel, hasEmployeePermission } from '../../../../
     templateUrl: './roleList.html',
     styleUrls: ['./roleList.css', '../../../../shared/styles/cardContainer.css', '../../../../shared/styles/searchContainer.css'],
     standalone: true,
-    imports: [CommonModule, FormsModule, RoleItemComponent, RoleEditComponent, ButtonModule]
+    imports: [CommonModule, FormsModule, RoleItemComponent, RoleEditComponent, ButtonModule, DialogModule, SelectModule]
 })
 export class RoleListComponent implements OnInit {
 
@@ -73,14 +75,36 @@ export class RoleListComponent implements OnInit {
         console.log('Editar', role);
     }
 
+    showReplaceModal = false;
+    selectedRoleId: number | null = null;
+    roleToDelete!: Role;
+
+    remainingRoles() {
+        return this.roles().filter(e => e.id != this.roleToDelete?.id)
+    }
+
     onDelete(role: Role) {
-        this.roleService.delete(role.id,
+        this.roleToDelete = role;
+        this.selectedRoleId = null;
+
+        // Abrir modal
+        this.showReplaceModal = true;
+    }
+
+    confirmDelete() {
+        if (!this.selectedRoleId) return;
+
+        this.roleService.delete(
+            this.roleToDelete.id,
             data => {
+                this.showReplaceModal = false;
                 this.loadRoles();
             },
             err => {
-                console.error('Error borrando rol', err)
-            }).subscribe();
+                console.error('Error borrando rol', err);
+            },
+            this.selectedRoleId
+        ).subscribe();
     }
 
     onCancel(role: Role | PostRole) {

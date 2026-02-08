@@ -2,3 +2,20 @@
     margin-left: 15%;
     margin-right: 15%;
 }
+
+
+.chooser {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+:host ::ng-deep .p-dialog .btn-cancel.p-button {
+    background: #829679 !important;
+    border-color: #829679 !important;
+}
+
+:host ::ng-deep .p-dialog .btn-submit.p-button {
+    background: #AEC8A2 !important;
+    border-color: #AEC8A2 !important;
+}

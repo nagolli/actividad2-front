@@ -7,7 +7,7 @@ export interface PaginatedResponse<G> { data: G[]; links: any; meta: any; }
 export abstract class InflatableListService<G, P> {
 
     protected abstract baseUrl: string;
-    private readonly http = inject(HttpClient);
+    protected readonly http = inject(HttpClient);
     protected fromJson(item: any): G { return item as G; }
     protected toJson(item: any): P { return item as P; }
 
@@ -63,9 +63,10 @@ export abstract class InflatableListService<G, P> {
     delete(
         id: number,
         next?: (data: G) => void,
-        error?: (err: any) => void
+        error?: (err: any) => void,
+        idToReplace?: number
     ): Observable<G> {
-        return this.http.delete<G>(`${this.baseUrl}/${id}`).pipe(
+        return this.http.delete<G>(`${this.baseUrl}/${id}` + (idToReplace ? '/' + idToReplace : '')).pipe(
             tap({
                 next: data => next?.(data),
                 error: err => error?.(err)
