@@ -1,7 +1,7 @@
 import { Routes } from '@angular/router';
 import { ProductComponent } from './components/product/product';
 import { LoginComponent } from './components/usersManagement/login/login';
-import { RoleListComponent } from './components/usersManagement/roles/roleList.component';
+import { RoleListComponent } from './components/usersManagement/roles/list/roleList';
 import { PermissionGuard, UnloggedGuard } from './guards';
 import { Permission, PermissionLevel } from './signals/loginData';
 

@@ -1,0 +1,66 @@
+/* Tarjeta base */
+.item-card {
+    border: 1px solid #dcdcdc;
+    border-radius: 6px;
+    box-shadow: none;
+}
+
+.item-card .p-card-body {
+    padding: 0.75rem 1rem;
+}
+
+/* Primera fila: solo el título */
+.first-row .title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #343428;
+    margin-top: 0rem;
+    margin-bottom: 0rem;
+}
+
+/* Segunda fila: texto izquierda + botones derecha */
+.second-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 0.25rem;
+}
+
+/* Descripción con tabulación */
+.permission-description {
+    padding-left: 1.5rem;
+    font-size: 0.9rem;
+    color: #343428
+}
+
+/* Botones en columna */
+.role-buttons {
+    display: flex;
+    flex-direction: row;
+    gap: 0.25rem;
+    margin-left: 1rem;
+}
+
+/* Estilos comunes a ambos botones */
+:host ::ng-deep .btn-delete,
+:host ::ng-deep .btn-edit {
+    padding: 0.4rem 1.2rem !important;
+    font-size: 0.9rem !important;
+    line-height: 1.2 !important;
+    min-width: 6rem !important;
+    /* mismo ancho sin usar px */
+    text-align: center;
+    color: white !important;
+}
+
+/* Botón Eliminar (verde oscuro) */
+:host ::ng-deep .btn-edit {
+    background: #829679 !important;
+    border-color: #829679 !important;
+}
+
+/* Botón Editar (verde claro) */
+:host ::ng-deep .btn-delete {
+    background: #AEC8A2 !important;
+    border-color: #AEC8A2 !important;
+}

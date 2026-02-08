@@ -20,7 +20,7 @@ export abstract class InflatableListService<T> {
     }
 
     getDetails(
-        id: number | string,
+        id: number,
         next?: (data: T) => void,
         error?: (err: any) => void
     ): Observable<T> {
@@ -46,12 +46,12 @@ export abstract class InflatableListService<T> {
     }
 
     update(
-        id: number | string,
+        id: number,
         payload: Partial<T>,
         next?: (data: T) => void,
         error?: (err: any) => void
     ): Observable<T> {
-        return this.http.put<T>(`${this.baseUrl}/${id}`, payload).pipe(
+        return this.http.patch<T>(`${this.baseUrl}/${id}`, payload).pipe(
             tap({
                 next: data => next?.(data),
                 error: err => error?.(err)
@@ -59,12 +59,16 @@ export abstract class InflatableListService<T> {
         );
     }
 
-    edit(
-        id: number | string,
-        payload: Partial<T>,
+    delete(
+        id: number,
         next?: (data: T) => void,
         error?: (err: any) => void
     ): Observable<T> {
-        return this.update(id, payload, next, error);
+        return this.http.delete<T>(`${this.baseUrl}/${id}`).pipe(
+            tap({
+                next: data => next?.(data),
+                error: err => error?.(err)
+            })
+        );
     }
 }

@@ -1,0 +1,18 @@
+<p-card class="item-card">
+    <div class="first-row">
+        <h3 class="title">
+            {{ name }}
+        </h3>
+    </div>
+
+    <div class="second-row">
+        <div class="permission-description">
+            {{ description }}
+        </div>
+
+        <div class="role-buttons">
+            <p-button label="Cancelar" styleClass="btn-delete" (onClick)="onDelete()"></p-button>
+            <p-button label="Guardar" styleClass="btn-edit" (onClick)="onEdit()"></p-button>
+        </div>
+    </div>
+</p-card>
