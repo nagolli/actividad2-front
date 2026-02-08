@@ -11,9 +11,16 @@
     <div class="roles-list">
         <ng-container *ngFor="let role of filteredRoles">
 
-            <app-role-edit *ngIf="role.id === 0; else showItem" id="newItem" [name]="role.name"
-                [description]="role.description()" (save)="onSave($event)" (cancel)="onCancel(role)">
+            <app-role-edit *ngIf="role.id === 0; else editItem" id="newItem" [name]="role.name"
+                [rolePermissions]="role.permissions" [itemId]="0" (save)="onSave($event)" (cancel)="onCancel(role)">
             </app-role-edit>
+
+            <ng-template #editItem>
+                <app-role-edit *ngIf="role.id === editingRole(); else showItem" id="editItem" [name]="role.name"
+                    [rolePermissions]="role.permissions" [itemId]="role.id" (save)="onSave($event)"
+                    (cancel)="onCancel(role)">
+                </app-role-edit>
+            </ng-template>
 
             <ng-template #showItem>
                 <app-role-item [name]="role.name" [description]="role.description()" (edit)="onEdit(role)"

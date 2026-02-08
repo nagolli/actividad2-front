@@ -4,6 +4,7 @@ import { Observable, tap, map } from 'rxjs';
 
 export interface PaginatedResponse<G> { data: G[]; links: any; meta: any; }
 
+//G de get, P de post
 export abstract class InflatableListService<G, P> {
 
     protected abstract baseUrl: string;

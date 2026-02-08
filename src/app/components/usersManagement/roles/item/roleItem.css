@@ -48,7 +48,6 @@
     font-size: 0.9rem !important;
     line-height: 1.2 !important;
     min-width: 6rem !important;
-    /* mismo ancho sin usar px */
     text-align: center;
     color: white !important;
 }

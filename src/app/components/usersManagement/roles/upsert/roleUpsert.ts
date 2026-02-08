@@ -25,7 +25,8 @@ import { Role } from '../roleInterfaces';
 export class RoleEditComponent {
 
     @Input() name!: string;
-    @Input() description!: string;
+    @Input() rolePermissions!: { id: number, level: number, description: string }[];
+    @Input() itemId!: number;
 
     @Output() cancel = new EventEmitter<void>();
     @Output() save = new EventEmitter<any>();
@@ -56,19 +57,19 @@ export class RoleEditComponent {
     ngOnInit() {
         this.form = this.fb.group({
             name: [this.name ?? ''],
-
-            0: [PermissionLevel.none],
-            1: [PermissionLevel.none],
-            2: [PermissionLevel.none],
-            3: [PermissionLevel.none],
-            4: [PermissionLevel.none],
-            5: [PermissionLevel.none],
-            6: [PermissionLevel.none]
+            0: [this.rolePermissions.find(e => e.id == 0)?.level ?? PermissionLevel.none],
+            1: [this.rolePermissions.find(e => e.id == 1)?.level ?? PermissionLevel.none],
+            2: [this.rolePermissions.find(e => e.id == 2)?.level ?? PermissionLevel.none],
+            3: [this.rolePermissions.find(e => e.id == 3)?.level ?? PermissionLevel.none],
+            4: [this.rolePermissions.find(e => e.id == 4)?.level ?? PermissionLevel.none],
+            5: [this.rolePermissions.find(e => e.id == 5)?.level ?? PermissionLevel.none],
+            6: [this.rolePermissions.find(e => e.id == 6)?.level ?? PermissionLevel.none]
         });
     }
 
     onSave() {
         if (this.form.valid) {
+            this.form.value.id = this.itemId;
             this.save.emit(this.form.value);
         }
     }

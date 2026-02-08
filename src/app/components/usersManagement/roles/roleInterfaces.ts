@@ -3,7 +3,7 @@ export class Role {
 
     public name: string = ""
     public id: number = 0;
-    public permissions: { description: string, level: number }[] = []
+    public permissions: { id: number, description: string, level: number }[] = []
 
     description(separator: string = "\n") {
         return this.permissions.filter(p => p.level > 0).map(p => p.description + " - " + this.levelToStr(p.level)).join(separator)

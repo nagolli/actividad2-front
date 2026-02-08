@@ -14,7 +14,7 @@
                 <div class="permission-item" *ngFor="let perm of permissions">
                     <label>{{ perm.label }}</label>
 
-                    <p-select [options]="permissionLevels" [formControlName]="perm.control"
+                    <p-select appendTo="body" [options]="permissionLevels" [formControlName]="perm.control"
                         placeholder="Prohibido"></p-select>
                 </div>
 

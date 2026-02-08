@@ -71,8 +71,10 @@ export class RoleListComponent implements OnInit {
         }
     }
 
+    editingRole = signal<number | null>(null);
+
     onEdit(role: Role) {
-        console.log('Editar', role);
+        this.editingRole.set(role.id);
     }
 
     showReplaceModal = false;
@@ -111,12 +113,13 @@ export class RoleListComponent implements OnInit {
         if (role.id == 0) {
             this.roles.set([...this.roles().filter(e => e.id > 0)])
         } else {
-
+            this.editingRole.set(null);
         }
     }
 
     onSave(values: any) {
         const role = new PostRole();
+        role.id = values.id || 0;
         role.name = values.name;
         role.permissions = [
             { permissionId: Permission.admin, permissionLevel: values[0] },
@@ -135,7 +138,12 @@ export class RoleListComponent implements OnInit {
                 console.log("Error creando rol", ev)
             }).subscribe();
         } else {
-
+            this.roleService.update(role.id, role, () => setTimeout(() => {
+                this.onCancel(role);
+                this.loadRoles()
+            }, 100), (ev) => {
+                console.log("Error actualizando rol", ev)
+            }).subscribe();
         }
     }
 }

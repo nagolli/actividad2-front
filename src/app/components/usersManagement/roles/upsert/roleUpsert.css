@@ -1,11 +1,9 @@
-/* Tarjeta base */
 .item-card {
     border: 1px solid #dcdcdc;
     border-radius: 6px;
     box-shadow: none;
 }
 
-/* Primera fila: solo el título */
 .first-row .title {
     font-size: 1.25rem;
     font-weight: 600;
@@ -25,13 +23,13 @@
     align-items: flex-start;
 }
 
-/* Descripción con tabulación */
 .permission-description {
     padding-left: 1.5rem;
     font-size: 0.9rem;
     color: #343428;
     display: grid;
-    grid-template-columns: 200px 200px;
+    grid-template-columns: 50% 50%;
+    width: 50%;
     /* ajustable */
     column-gap: 1rem;
     row-gap: 0.5rem;
