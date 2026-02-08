@@ -2,10 +2,10 @@
 import { Injectable } from '@angular/core';
 import { InflatableListService } from '../../../shared/services/InflatableList.service'
 import { environment } from '../../../../environments/environment';
-import { Role } from './roleInterfaces';
+import { PostRole, Role } from './roleInterfaces';
 
 @Injectable({ providedIn: 'root' })
-export class RoleService extends InflatableListService<Role> {
+export class RoleService extends InflatableListService<Role, PostRole> {
 
     protected baseUrl = `${environment.apiUrl}/role`;
 

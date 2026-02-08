@@ -27,7 +27,7 @@ export class MenuComponent {
         isClient() && { label: 'Mis pedidos', icon: 'fa-solid fa-box-open', command: () => this.myOrders() },
         isClient() && { label: 'Mis reservas', icon: 'fa-solid fa-book', command: () => this.myReservations() },
         hasEmployeePermission(Permission.roles, PermissionLevel.read) && { label: 'Roles', icon: 'fa-solid fa-user-shield', command: () => this.manageRoles() },
-        hasEmployeePermission(Permission.roles, PermissionLevel.read) && { label: 'Empleados', icon: 'fa-solid fa-users', command: () => this.manageEmployees() },
+        hasEmployeePermission(Permission.empleados, PermissionLevel.read) && { label: 'Empleados', icon: 'fa-solid fa-users', command: () => this.manageEmployees() },
         hasEmployeePermission(Permission.productos, PermissionLevel.read) && { label: 'Proveedores', icon: 'fa-solid fa-user-tie', command: () => this.manageProviders() },
         hasEmployeePermission(Permission.productos, PermissionLevel.read) && { label: 'Categorias', icon: 'fa-solid fa-tags', command: () => this.manageCategories() },
         hasEmployeePermission(Permission.promociones, PermissionLevel.read) && { label: 'Promociones', icon: 'fa-solid fa-percent', command: () => this.managePromotions() },

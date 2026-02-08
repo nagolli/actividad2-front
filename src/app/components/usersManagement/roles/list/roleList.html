@@ -4,11 +4,23 @@
             <input pInputText type="text" placeholder="Buscar" [(ngModel)]="searchTerm" />
         </div>
         <span class="roles-title">{{ tableName }}</span>
-        <p-button label="Añadir rol" styleClass="btn-add" icon="pi pi-plus" (onClick)="onNew()"></p-button>
+        <p-button label="Añadir rol" styleClass="btn-add" icon="pi pi-plus" (onClick)="onNew()"
+            *ngIf="hasPermission()"></p-button>
     </div>
 
     <div class="roles-list">
-        <app-role-item *ngFor="let role of filteredRoles" [name]="role.name" [description]="role.description()"
-            (edit)="onEdit(role)" (delete)="onDelete(role)"></app-role-item>
+        <ng-container *ngFor="let role of filteredRoles">
+
+            <app-role-edit *ngIf="role.id === 0; else showItem" id="newItem" [name]="role.name"
+                [description]="role.description()" (save)="onSave($event)" (cancel)="onCancel(role)">
+            </app-role-edit>
+
+            <ng-template #showItem>
+                <app-role-item [name]="role.name" [description]="role.description()" (edit)="onEdit(role)"
+                    (delete)="onDelete(role)">
+                </app-role-item>
+            </ng-template>
+
+        </ng-container>
     </div>
 </div>

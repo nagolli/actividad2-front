@@ -1,18 +1,34 @@
-<p-card class="item-card">
-    <div class="first-row">
-        <h3 class="title">
-            {{ name }}
-        </h3>
-    </div>
+<form [formGroup]="form" (ngSubmit)="onSave()">
+    <p-card class="item-card">
 
-    <div class="second-row">
-        <div class="permission-description">
-            {{ description }}
+        <div class="first-row">
+            <h3 class="title">
+                <input type="text" formControlName="name" required placeholder="Nombre del rol" />
+            </h3>
         </div>
 
-        <div class="role-buttons">
-            <p-button label="Cancelar" styleClass="btn-delete" (onClick)="onDelete()"></p-button>
-            <p-button label="Guardar" styleClass="btn-edit" (onClick)="onEdit()"></p-button>
+        <div class="second-row">
+
+            <div class="permission-description">
+
+                <div class="permission-item" *ngFor="let perm of permissions">
+                    <label>{{ perm.label }}</label>
+
+                    <p-select [options]="permissionLevels" [formControlName]="perm.control"
+                        placeholder="Prohibido"></p-select>
+                </div>
+
+            </div>
+
+            <div class="role-buttons">
+                <p-button label="Cancelar" styleClass="btn-cancel" (onClick)="onCancel()">
+                </p-button>
+
+                <p-button label="Guardar" styleClass="btn-submit" type="submit">
+                </p-button>
+            </div>
+
         </div>
-    </div>
-</p-card>
+
+    </p-card>
+</form>

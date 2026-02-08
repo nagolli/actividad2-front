@@ -2,29 +2,30 @@ import { HttpClient } from '@angular/common/http';
 import { inject } from '@angular/core';
 import { Observable, tap, map } from 'rxjs';
 
-export interface PaginatedResponse<T> { data: T[]; links: any; meta: any; }
+export interface PaginatedResponse<G> { data: G[]; links: any; meta: any; }
 
-export abstract class InflatableListService<T> {
+export abstract class InflatableListService<G, P> {
 
     protected abstract baseUrl: string;
     private readonly http = inject(HttpClient);
-    protected fromJson(item: any): T { return item as T; }
+    protected fromJson(item: any): G { return item as G; }
+    protected toJson(item: any): P { return item as P; }
 
     getList(
-        next?: (data: T[]) => void,
+        next?: (data: G[]) => void,
         error?: (err: any) => void
-    ): Observable<T[]> {
-        return this.http.get<PaginatedResponse<T>>(`${this.baseUrl}`).pipe(
+    ): Observable<G[]> {
+        return this.http.get<PaginatedResponse<G>>(`${this.baseUrl}`).pipe(
             map(resp => resp.data.map((item: any) => this.fromJson(item))), tap({ next: data => next?.(data), error: err => error?.(err) })
         );
     }
 
     getDetails(
         id: number,
-        next?: (data: T) => void,
+        next?: (data: G) => void,
         error?: (err: any) => void
-    ): Observable<T> {
-        return this.http.get<T>(`${this.baseUrl}/${id}`).pipe(
+    ): Observable<G> {
+        return this.http.get<G>(`${this.baseUrl}/${id}`).pipe(
             tap({
                 next: data => next?.(data),
                 error: err => error?.(err)
@@ -33,11 +34,11 @@ export abstract class InflatableListService<T> {
     }
 
     create(
-        payload: Partial<T>,
-        next?: (data: T) => void,
+        payload: Partial<P>,
+        next?: (data: P) => void,
         error?: (err: any) => void
-    ): Observable<T> {
-        return this.http.post<T>(`${this.baseUrl}`, payload).pipe(
+    ): Observable<P> {
+        return this.http.post<P>(`${this.baseUrl}`, payload).pipe(
             tap({
                 next: data => next?.(data),
                 error: err => error?.(err)
@@ -47,11 +48,11 @@ export abstract class InflatableListService<T> {
 
     update(
         id: number,
-        payload: Partial<T>,
-        next?: (data: T) => void,
+        payload: Partial<P>,
+        next?: (data: P) => void,
         error?: (err: any) => void
-    ): Observable<T> {
-        return this.http.patch<T>(`${this.baseUrl}/${id}`, payload).pipe(
+    ): Observable<P> {
+        return this.http.patch<P>(`${this.baseUrl}/${id}`, payload).pipe(
             tap({
                 next: data => next?.(data),
                 error: err => error?.(err)
@@ -61,10 +62,10 @@ export abstract class InflatableListService<T> {
 
     delete(
         id: number,
-        next?: (data: T) => void,
+        next?: (data: G) => void,
         error?: (err: any) => void
-    ): Observable<T> {
-        return this.http.delete<T>(`${this.baseUrl}/${id}`).pipe(
+    ): Observable<G> {
+        return this.http.delete<G>(`${this.baseUrl}/${id}`).pipe(
             tap({
                 next: data => next?.(data),
                 error: err => error?.(err)

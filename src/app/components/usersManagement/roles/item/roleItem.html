@@ -11,8 +11,9 @@
         </div>
 
         <div class="role-buttons">
-            <p-button label="Eliminar" styleClass="btn-delete" (onClick)="onDelete()"></p-button>
-            <p-button label="Editar" styleClass="btn-edit" (onClick)="onEdit()"></p-button>
+            <p-button label=" Eliminar" styleClass="btn-delete" (onClick)="onDelete()" *ngIf="hasExtraPermission()">
+            </p-button>
+            <p-button label="Editar" styleClass="btn-edit" (onClick)="onEdit()" *ngIf="hasPermission()"></p-button>
         </div>
     </div>
 </p-card>

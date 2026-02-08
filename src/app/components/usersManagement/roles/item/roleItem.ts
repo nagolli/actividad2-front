@@ -1,6 +1,8 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CardModule } from 'primeng/card';
 import { ButtonModule } from 'primeng/button';
+import { hasEmployeePermission, Permission, PermissionLevel } from '../../../../signals/loginData';
+import { CommonModule } from '@angular/common';
 
 @Component({
     selector: 'app-role-item',
@@ -10,6 +12,7 @@ import { ButtonModule } from 'primeng/button';
     standalone: true,
     imports: [
         CardModule,
+        CommonModule,
         ButtonModule
     ]
 })
@@ -19,6 +22,13 @@ export class RoleItemComponent {
 
     @Output() edit = new EventEmitter<void>();
     @Output() delete = new EventEmitter<void>();
+
+    hasPermission() {
+        return hasEmployeePermission(Permission.roles, PermissionLevel.edit)
+    }
+    hasExtraPermission() {
+        return hasEmployeePermission(Permission.roles, PermissionLevel.advanced)
+    }
 
     onEdit() {
         this.edit.emit();

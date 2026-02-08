@@ -17,7 +17,13 @@ export class Role {
             default: return "Prohibido";
         }
     }
+}
 
+export class PostRole {
+
+    public name: string = ""
+    public id: number = 0;
+    public permissions: { permissionId: number, permissionLevel: number }[] = []
 }
 
 

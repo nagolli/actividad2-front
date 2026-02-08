@@ -6,7 +6,8 @@ export enum Permission {
     stock = 2,
     productos = 3,
     reservas = 4,
-    promociones = 5
+    promociones = 5,
+    empleados = 6
 }
 
 export enum PermissionLevel {

@@ -5,11 +5,11 @@
             <h1>LudoPlanet</h1>
         </div>
         <div class="header-icons">
-            <a href="/product" class="icon-link-container">
+            <a (click)="go('/product')" class="icon-link-container">
                 <i class="fa-solid fa-hat-wizard"></i>
                 <span class="icon-label">PRODUCTOS</span>
             </a>
-            <a href="#" class="icon-link-container">
+            <a (click)="go('/')" class="icon-link-container">
                 <i class="fa-solid fa-chess"></i>
                 <span class="icon-label">RESERVAS</span>
             </a>
@@ -20,7 +20,7 @@
                 </button>
             </div>
             <app-user-menu #userMenu></app-user-menu>
-            <a href="#" class="icon-link"><i class="fa-solid fa-cart-shopping"></i></a>
+            <a (click)="go('/')" class=" icon-link"><i class="fa-solid fa-cart-shopping"></i></a>
             <button class="icon-button" type="button" (click)="userMenu.menu.toggle($event)">
                 <i class="icon-link fa-regular fa-user"></i>
             </button>
