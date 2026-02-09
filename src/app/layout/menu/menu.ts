@@ -74,8 +74,7 @@ export class MenuComponent {
   }
 
   manageProviders() {
-    console.log('Ir a gestionar proveedores, Bloque 2');
-    // Navegar
+    this.router.navigate(['/supplier'])
   }
 
   myOrders() {

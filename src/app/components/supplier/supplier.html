@@ -1,0 +1,70 @@
+<div class="supplier-container">
+  <div class="supplier-header">
+    <div class="search-container">
+      <input
+        pInputText
+        type="text"
+        placeholder="Buscar"
+        [(ngModel)]="searchTerm" />
+    </div>
+
+    <span class="supplier-title">Proveedores</span>
+
+    <p-button
+      label="Añadir proveedor"
+      icon="pi pi-plus"
+      styleClass="btn-add"
+      (onClick)="onNew()"
+      *ngIf="hasPermission()">
+    </p-button>
+  </div>
+
+  <div class="supplier-content">
+    <div class="supplier-list">
+
+      <div
+        *ngFor="let supplier of filteredSuppliers"
+        class="supplier-card">
+
+        <div class="card-main">
+          <div class="card-name">
+            {{ supplier.name }}
+          </div>
+
+          <div class="card-info">
+            <span>E-mail:</span>{{supplier.email}}
+            <span>Teléfono</span>{{supplier.phone}}
+          </div>
+        </div>
+
+        <div class="card-actions">
+          <label class="checkbox-container">
+            <input
+              type="checkbox"
+              [checked]="supplier.inactive === 1"
+              (change)="toggleInactive(supplier)" />
+            <span>Dar de baja</span>
+          </label>
+
+          <div class="buttons">
+            <p-button
+              label="Eliminar"
+              styleClass="btn-delete"
+              (onClick)="onDelete(supplier)"
+              *ngIf="hasPermission()">
+            </p-button>
+
+            <p-button
+              label="Editar"
+              styleClass="btn-edit"
+              (onClick)="onEdit(supplier)"
+              *ngIf="hasPermission()">
+            </p-button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+</div>
