@@ -5,6 +5,7 @@ import { RoleListComponent } from './components/usersManagement/roles/list/roleL
 import { PermissionGuard, UnloggedGuard } from './guards';
 import { Permission, PermissionLevel } from './signals/loginData';
 import { SupplierComponent } from './components/supplier/supplier';
+import { CategoryComponent } from './components/category/category';
 
 export const routes: Routes = [
   {
@@ -14,6 +15,12 @@ export const routes: Routes = [
   {
     path: 'supplier',
     component: SupplierComponent,
+    canActivate: [PermissionGuard],
+    data: { permission: Permission.productos, level: PermissionLevel.read }
+  },
+  {
+    path: 'category',
+    component: CategoryComponent,
     canActivate: [PermissionGuard],
     data: { permission: Permission.productos, level: PermissionLevel.read }
   },

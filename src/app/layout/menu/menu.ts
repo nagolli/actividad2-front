@@ -69,12 +69,11 @@ export class MenuComponent {
   }
 
   manageCategories() {
-    console.log('Ir a gestionar categorias, Bloque 2');
-    // Navegar
+    this.router.navigate(['/category']);
   }
 
   manageProviders() {
-    this.router.navigate(['/supplier'])
+    this.router.navigate(['/supplier']);
   }
 
   myOrders() {

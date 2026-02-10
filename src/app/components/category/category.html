@@ -1,0 +1,58 @@
+<div class="category-container">
+  <div class="category-header">
+    <div class="search-container">
+      <input pInputText type="text" placeholder="Buscar" [(ngModel)]="searchTerm" />
+    </div>
+
+    <span class="category-title">Categorías</span>
+
+    <p-button label="Añadir categoría" icon="pi pi-plus" styleClass="btn-add" (onClick)="onNew()"
+      *ngIf="hasPermission()">
+    </p-button>
+  </div>
+
+  <div class="category-content">
+    <div class="category-list">
+
+      <div *ngFor="let category of filteredCategories" class="category-card">
+
+        <div class="card-main">
+
+          <!-- NOMBRE -->
+          <div class="card-name" *ngIf="!category.isEditing">
+            {{ category.name }}
+          </div>
+
+          <input *ngIf="category.isEditing" pInputText [(ngModel)]="category.name" placeholder="Nombre de la categoría" />
+
+        </div>
+
+        <!-- DERECHA -->
+        <div class="card-actions">
+
+          <!-- BOTONES -->
+          <div class="buttons">
+
+            <!-- GUARDAR -->
+            <p-button *ngIf="category.isEditing" label="Guardar" icon="pi pi-check" styleClass="btn-edit"
+              (onClick)="onSave(category)">
+            </p-button>
+
+            <!-- EDITAR -->
+            <p-button *ngIf="!category.isEditing" label="Editar" styleClass="btn-edit" (onClick)="onEdit(category)"
+              [disabled]="isEditingAny()">
+            </p-button>
+
+            <!-- ELIMINAR -->
+            <p-button *ngIf="!category.isEditing" label="Eliminar" styleClass="btn-delete"
+              (onClick)="onDelete(category)">
+            </p-button>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+</div>
