@@ -61,7 +61,64 @@
             </small>
 
             <!-- Módulo de direcciones -->
-            <app-addresses-form [parentForm]="userForm"></app-addresses-form>
+            <h4>Dirección</h4>
+            <div class="address-card">
+
+                <div class="address-fields">
+
+                    <div class="field">
+                        <label>Nombre</label>
+                        <input pInputText formControlName="name" />
+                    </div>
+
+                    <div class="field">
+                        <label>Calle</label>
+                        <input pInputText formControlName="street" />
+                    </div>
+
+                    <div class="field">
+                        <label>Número</label>
+                        <input pInputText formControlName="number" />
+                    </div>
+
+                    <div class="field">
+                        <label>Ciudad</label>
+                        <input pInputText formControlName="city" />
+                    </div>
+
+                    <div class="field">
+                        <label>Provincia</label>
+                        <input pInputText formControlName="province" />
+                    </div>
+
+                    <div class="field">
+                        <label>Código Postal</label>
+                        <input pInputText formControlName="postalCode" />
+                    </div>
+
+                    <div class="field">
+                        <label>País</label>
+                        <input pInputText formControlName="country" />
+                    </div>
+
+                    <div class="field">
+                        <label>Piso</label>
+                        <input pInputText formControlName="floor" />
+                    </div>
+
+                    <div class="field">
+                        <label>Puerta</label>
+                        <input pInputText formControlName="door" />
+                    </div>
+
+                    <div class="field">
+                        <label>Escalera</label>
+                        <input pInputText formControlName="staircase" />
+                    </div>
+
+                </div>
+
+            </div>
 
             <!-- Botones -->
             <div class="button-row">

@@ -4,7 +4,6 @@ import { CommonModule } from '@angular/common';
 import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
 import { Router } from '@angular/router';
-import { AddressesComponent } from './addresses/addressSelector';
 
 export enum UserComponentMode {
     register = 'register',
@@ -20,8 +19,7 @@ export enum UserComponentMode {
         CommonModule,
         ReactiveFormsModule,
         InputTextModule,
-        ButtonModule,
-        AddressesComponent
+        ButtonModule
     ]
 })
 export class UserComponent {
@@ -36,7 +34,17 @@ export class UserComponent {
         nombre: ['', Validators.required],
         apellidos: ['', Validators.required],
         telefono: [''],
-        password: ['']
+        password: [''],
+        name: ['', [Validators.required, Validators.maxLength(64)]],
+        street: ['', [Validators.required, Validators.maxLength(128)]],
+        number: ['', [Validators.required, Validators.maxLength(10)]],
+        city: ['', [Validators.required, Validators.maxLength(64)]],
+        province: ['', [Validators.required, Validators.maxLength(64)]],
+        postalCode: ['', [Validators.required, Validators.maxLength(8)]],
+        country: ['', [Validators.required, Validators.maxLength(64)]],
+        floor: ['', [Validators.maxLength(10)]],
+        door: ['', [Validators.maxLength(10)]],
+        staircase: ['', [Validators.maxLength(10)]]
     });
 
     showPassword = false;
