@@ -20,6 +20,10 @@ export class ProductService {
     return this.http.get<Product[]>(`${environment.apiUrl}/product`);
   }
 
+  getProduct(id: number): Observable<Product> {
+    return this.http.get<Product>(`${environment.apiUrl}/product/${id}`);
+  }
+
   getPriceRange(): Observable<PriceRange> {
     return this.http.get<PriceRange>(`${environment.apiUrl}/product/price-range`);
   }

@@ -12,6 +12,7 @@ import { SelectModule } from 'primeng/select';
 import { SelectOption } from '../../shared/models/select-option.model';
 import { SelectOptionService } from '../../shared/services/select-option.service';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-product',
@@ -33,6 +34,7 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
 export class ProductComponent implements OnInit {
   
   private readonly productService = inject(ProductService);
+  private readonly router = inject(Router)
   private readonly selectOptionService = inject(SelectOptionService);
   protected readonly products = signal<Product[]>([])
   protected readonly isGridView = signal<boolean>(true);
@@ -82,7 +84,7 @@ export class ProductComponent implements OnInit {
   }
 
   onProductClick(product: Product) {
-    console.log('Producto seleccionado:', product);
+    this.router.navigate(['/product', product.id]);
   }
 
   toggleView() {

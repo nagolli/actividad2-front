@@ -1,0 +1,47 @@
+@if (product()) {
+<div class="product-detail-wrapper">
+    <div class="product-detail">
+        <div class="image-section">
+            <img [src]="product()!.image" alt="{{ product()!.name }}" />
+        </div>
+
+        <div class="info-section">
+            <h1 class="product-title">{{ product()!.name }}</h1>
+
+            <p class="product-description">
+                {{ product()!.description }}
+            </p>
+
+            <div class="meta">
+                <span class="badge">Categoría: {{category()!.name}}</span>
+                <span class="badge">Proveedor: {{supplier()!.name}}</span>
+            </div>
+
+            <div class="rating">
+                @if (rating() != null) {
+                    <span class="d-inline-flex align-items-center">
+                        @for (star of stars; track star) {
+                            <i class="me-1" [ngClass]="getStarClass(star)"></i>
+                        }
+                    </span>
+                    <span>{{ (rating() ?? 0) | number: '1.1-1' }} / 5</span>
+                } @else {
+                    <span>No hay reseñas</span>
+                }
+            </div>
+
+            <div class="price">
+                {{ product()!.price }} €
+            </div>
+
+            <div class="actions">
+                <input type="number" class="form-control quantity-input" [ngModel]="quantity()"
+                    (ngModelChange)="quantity.set($event)" [min]="1" [max]="product()!.stock" />
+
+                <button pButton class="add-button" label="Agregar al carrito"></button>
+            </div>
+        </div>
+    </div>
+</div>
+<app-review [idProduct]="productId()"></app-review>
+}

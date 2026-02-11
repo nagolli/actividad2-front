@@ -6,11 +6,16 @@ import { PermissionGuard, UnloggedGuard } from './guards';
 import { Permission, PermissionLevel } from './signals/loginData';
 import { SupplierComponent } from './components/supplier/supplier';
 import { CategoryComponent } from './components/category/category';
+import { ProductDetailComponent } from './components/product-detail/product-detail';
 
 export const routes: Routes = [
   {
     path: 'product',
     component: ProductComponent
+  },
+  {
+    path: 'product/:id',
+    component: ProductDetailComponent
   },
   {
     path: 'supplier',
