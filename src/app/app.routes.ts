@@ -6,11 +6,25 @@ import { RoleListComponent } from './components/usersManagement/roles/list/roleL
 import { PermissionGuard, UnloggedGuard } from './guards';
 import { Permission, PermissionLevel } from './signals/loginData';
 import { UserComponent } from './components/usersManagement/register/userForm';
+import { SupplierComponent } from './components/supplier/supplier';
+import { CategoryComponent } from './components/category/category';
 
 export const routes: Routes = [
   {
     path: 'product',
     component: ProductComponent
+  },
+  {
+    path: 'supplier',
+    component: SupplierComponent,
+    canActivate: [PermissionGuard],
+    data: { permission: Permission.productos, level: PermissionLevel.read }
+  },
+  {
+    path: 'category',
+    component: CategoryComponent,
+    canActivate: [PermissionGuard],
+    data: { permission: Permission.productos, level: PermissionLevel.read }
   },
   {
     path: 'login',

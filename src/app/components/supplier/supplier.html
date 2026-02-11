@@ -1,0 +1,76 @@
+<div class="supplier-container">
+  <div class="supplier-header">
+    <div class="search-container">
+      <input pInputText type="text" placeholder="Buscar" [(ngModel)]="searchTerm" />
+    </div>
+
+    <span class="supplier-title">Proveedores</span>
+
+    <p-button label="Añadir proveedor" icon="pi pi-plus" styleClass="btn-add" (onClick)="onNew()"
+      *ngIf="hasPermission()">
+    </p-button>
+  </div>
+
+  <div class="supplier-content">
+    <div class="supplier-list">
+
+      <div *ngFor="let supplier of filteredSuppliers" class="supplier-card">
+
+        <div class="card-main">
+
+          <!-- NOMBRE -->
+          <div class="card-name" *ngIf="!supplier.isEditing">
+            {{ supplier.name }}
+          </div>
+
+          <input *ngIf="supplier.isEditing" pInputText [(ngModel)]="supplier.name" placeholder="Nombre" />
+
+          <!-- INFO -->
+          <div class="card-info" *ngIf="!supplier.isEditing">
+            <span>E-mail:</span>{{ supplier.email }}
+            <span>Teléfono:</span>{{ supplier.phone }}
+          </div>
+
+          <div class="card-info" *ngIf="supplier.isEditing">
+            <input pInputText [(ngModel)]="supplier.email" placeholder="E-mail" />
+
+            <input pInputText [(ngModel)]="supplier.phone" placeholder="Teléfono" />
+          </div>
+        </div>
+
+        <!-- DERECHA -->
+        <div class="card-actions">
+
+          <!-- CHECKBOX -->
+          <label class="checkbox-container">
+            <input type="checkbox" [(ngModel)]="supplier.inactive" [disabled]="!supplier.isEditing"
+              [ngModelOptions]="{standalone: true}" />
+            <span>Dar de baja</span>
+          </label>
+
+          <!-- BOTONES -->
+          <div class="buttons">
+
+            <!-- GUARDAR -->
+            <p-button *ngIf="supplier.isEditing" label="Guardar" icon="pi pi-check" styleClass="btn-edit"
+              (onClick)="onSave(supplier)">
+            </p-button>
+
+            <!-- EDITAR -->
+            <p-button *ngIf="!supplier.isEditing" label="Editar" styleClass="btn-edit" (onClick)="onEdit(supplier)"
+              [disabled]="isEditingAny()">
+            </p-button>
+
+            <!-- ELIMINAR -->
+            <p-button *ngIf="!supplier.isEditing" label="Eliminar" styleClass="btn-delete"
+              (onClick)="onDelete(supplier)">
+            </p-button>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+</div>
