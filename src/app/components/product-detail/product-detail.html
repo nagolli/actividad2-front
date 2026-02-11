@@ -38,7 +38,7 @@
                 <input type="number" class="form-control quantity-input" [ngModel]="quantity()"
                     (ngModelChange)="quantity.set($event)" [min]="1" [max]="product()!.stock" />
 
-                <button pButton class="add-button" label="Agregar al carrito"></button>
+                <button pButton class="add-button" label="Agregar al carrito" (click)="addToCart()"></button>
             </div>
         </div>
     </div>
