@@ -10,8 +10,8 @@
   gap: 3rem;
 }
 
+/* IMAGEN */
 .image-section {
-  background: #e5e5e0;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -23,26 +23,29 @@
   object-fit: contain;
 }
 
+/* INFO */
 .info-section {
   display: flex;
   flex-direction: column;
   gap: 1.2rem;
 }
 
-
-.product-title {
-  font-size: 2.2rem;
-  font-weight: 700;
-  color: #3B3B1A;
-}
-
+/* TÍTULO */
+.product-title,
 .product-title-edit {
   font-size: 2.2rem;
   font-weight: 700;
-  color: #3B3B1A;
-  padding: 0.5rem;
+  color: #3b3b1a;
 }
 
+.product-title-edit {
+  padding: 0.4rem 0.6rem;
+  background: white;
+  border: 1px solid #cfcfc5;
+  border-radius: 6px;
+}
+
+/* DESCRIPCIÓN */
 .product-description {
   font-size: 1.1rem;
   color: #555;
@@ -51,159 +54,99 @@
 .product-description-edit {
   font-size: 1.1rem;
   color: #555;
-  padding: 0.5rem;
-  min-height: 80px;
+  padding: 0.6rem;
+  min-height: 90px;
+  background: white;
+  border: 1px solid #cfcfc5;
+  border-radius: 6px;
+  resize: vertical;
 }
 
+/* META */
 .meta {
   display: flex;
   gap: 1rem;
 }
 
 .meta-edit {
-  display: flex;
-  gap: 1rem;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1.5rem;
 }
 
 .select-group {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 0.4rem;
 }
 
 .select-group label {
   font-weight: 600;
-  color: #3B3B1A;
+  color: #3b3b1a;
   font-size: 0.95rem;
 }
 
 .select-group .form-select {
-  padding: 0.5rem 0.75rem;
-  border: 1px solid #ddd;
+  padding: 0.5rem 0.7rem;
+  border: 1px solid #cfcfc5;
   border-radius: 6px;
   font-size: 0.95rem;
-  background-color: white;
-  cursor: pointer;
+  background: white;
 }
 
+/* BADGES */
 .badge {
-  border: 1px solid #3B3B1A;
+  border: 1px solid #3b3b1a;
   padding: 0.3rem 0.8rem;
   border-radius: 6px;
-  font-size: 0.9rem;
 }
 
+/* RATING */
 .rating {
   font-size: 1rem;
-  color: #3B3B1A;
+  color: #3b3b1a;
 }
 
-.rating span + span {
-  margin-left: 0.5rem;
-}
-
+/* PRECIO SOLO LECTURA */
 .price {
   font-size: 2rem;
   font-weight: bold;
-  color: #3B3B1A;
+  color: #3b3b1a;
 }
 
-.price-edit {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-size: 2rem;
-  font-weight: bold;
-}
-
-.price-edit input {
-  width: 150px;
-  font-size: 2rem;
-  font-weight: bold;
-  padding: 0.5rem;
-}
-
-.price-edit span {
-  color: #3B3B1A;
-}
-
+/* ACCIONES */
 .actions {
   display: flex;
-  align-items: center;
   justify-content: flex-end;
-  gap: 1.5rem;
-  margin-top: 1rem;
+  gap: 0.6rem;
+  margin-top: 1.5rem;
 }
 
-.stock-edit {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
+/* BOTONES */
+.actions .add-button,
+:host ::ng-deep .edit-button,
+:host ::ng-deep .btn-save {
+  background: #829679 !important;
+  border-color: #829679 !important;
+  color: white !important;
+  height: 44px;
+  border-radius: 6px;
 }
 
-.stock-edit label {
-  font-weight: 600;
-  color: #3B3B1A;
+:host ::ng-deep .btn-cancel,
+:host ::ng-deep .btn-delete {
+  background: #aec8a2 !important;
+  border-color: #aec8a2 !important;
+  color: white !important;
+  height: 44px;
+  border-radius: 6px;
 }
 
-.stock-edit input {
-  width: 120px;
-}
-
+/* CANTIDAD */
 .quantity-input {
   width: 60px;
   height: 44px;
-  border-radius: 6px;
-  border-color: #3B3B1A;
   text-align: center;
-}
-
-.actions .add-button {
-  height: 44px;
   border-radius: 6px;
-}
-
-.edit-button {
-  background: #3B3B1A !important;
-  color: white !important;
-  height: 44px;
-  border-radius: 6px;
-}
-
-.edit-button:hover {
-  background: #5a5a2f !important;
-}
-
-.btn-save {
-  background: #28a745 !important;
-  color: white !important;
-  height: 44px;
-  border-radius: 6px;
-}
-
-.btn-save:hover {
-  background: #218838 !important;
-}
-
-.btn-cancel {
-  background: #dc3545 !important;
-  color: white !important;
-  height: 44px;
-  border-radius: 6px;
-}
-
-.btn-cancel:hover {
-  background: #c82333 !important;
-}
-
-.quantity-input[type="number"] {
-  appearance: auto;
-  -webkit-appearance: auto;
-  -moz-appearance: auto;
-}
-
-.quantity-input[type="number"]::-webkit-inner-spin-button,
-.quantity-input[type="number"]::-webkit-outer-spin-button {
-  opacity: 1;
+  border: 1px solid #3b3b1a;
 }
