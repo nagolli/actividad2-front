@@ -6,15 +6,42 @@
         </div>
 
         <div class="info-section">
-            <h1 class="product-title">{{ product()!.name }}</h1>
+            <h1 class="product-title" *ngIf="!isEditing()">
+                {{ product()!.name }}
+            </h1>
+            <input pInputText class="product-title-edit" *ngIf="isEditing()" [(ngModel)]="product()!.name" />
 
-            <p class="product-description">
+            <p class="product-description" *ngIf="!isEditing()">
                 {{ product()!.description }}
             </p>
+            <textarea pInputTextarea class="product-description-edit" *ngIf="isEditing()" [(ngModel)]="product()!.description"></textarea>
 
-            <div class="meta">
-                <span class="badge">Categoría: {{category()!.name}}</span>
-                <span class="badge">Proveedor: {{supplier()!.name}}</span>
+            <div class="meta" *ngIf="!isEditing()">
+                @if (category() && supplier()) {
+                    <span class="badge">Categoría: {{category()!.name}}</span>
+                    <span class="badge">Proveedor: {{supplier()!.name}}</span>
+                }
+            </div>
+
+            <div class="meta-edit" *ngIf="isEditing()">
+                <div class="select-group">
+                    <label>Categoría:</label>
+                    <select class="form-select" [(ngModel)]="product()!.categoryId">
+                        <option value="" disabled>Seleccionar categoría</option>
+                        @for (option of categoryOptions(); track option.value) {
+                            <option [value]="option.value">{{ option.label }}</option>
+                        }
+                    </select>
+                </div>
+                <div class="select-group">
+                    <label>Proveedor:</label>
+                    <select class="form-select" [(ngModel)]="product()!.supplierId">
+                        <option value="" disabled>Seleccionar proveedor</option>
+                        @for (option of supplierOptions(); track option.value) {
+                            <option [value]="option.value">{{ option.label }}</option>
+                        }
+                    </select>
+                </div>
             </div>
 
             <div class="rating">
@@ -30,15 +57,34 @@
                 }
             </div>
 
-            <div class="price">
+            <div class="price" *ngIf="!isEditing()">
                 {{ product()!.price }} €
             </div>
 
-            <div class="actions">
-                <input type="number" class="form-control quantity-input" [ngModel]="quantity()"
-                    (ngModelChange)="quantity.set($event)" [min]="1" [max]="product()!.stock" />
+            <div class="price-edit" *ngIf="isEditing()">
+                <input type="number" class="form-control" [(ngModel)]="product()!.price" step="0.01" />
+                <span>€</span>
+            </div>
 
-                <button pButton class="add-button" label="Agregar al carrito" (click)="addToCart()"></button>
+            <div class="actions" *ngIf="!isEditing()">
+                @if (!hasPermission()) {
+                    <input type="number" class="form-control quantity-input" [ngModel]="quantity()"
+                        (ngModelChange)="quantity.set($event)" [min]="1" [max]="product()!.stock" />
+
+                    <button pButton class="add-button" label="Agregar al carrito" (click)="addToCart()"></button>
+                } @else {
+                    <button pButton class="edit-button" label="Editar" icon="pi pi-pencil" (click)="onEdit()"></button>
+                    <button pButton label="Eliminar" icon="pi pi-trash" class="btn-delete" (click)="onDelete()"></button>
+                }
+            </div>
+
+            <div class="actions" *ngIf="isEditing()">
+                <div class="stock-edit">
+                    <label>Stock:</label>
+                    <input type="number" class="form-control" [(ngModel)]="product()!.stock" [min]="0" />
+                </div>
+                <button pButton label="Guardar" icon="pi pi-check" class="btn-save" (click)="onSave()"></button>
+                <button pButton label="Cancelar" icon="pi pi-times" class="btn-cancel" (click)="onCancel()"></button>
             </div>
         </div>
     </div>

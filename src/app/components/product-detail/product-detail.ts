@@ -1,5 +1,5 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { ButtonModule } from 'primeng/button';
 import { ProductService } from '../product/product.service';
@@ -11,6 +11,9 @@ import { Category } from '../category/category.models';
 import { Supplier } from '../supplier/supplier.models';
 import { ReviewService } from './reviews/review.service';
 import { ReviewComponent } from "./reviews/review";
+import { Permission, PermissionLevel, hasEmployeePermission } from '../../signals/loginData';
+import { SelectOption } from '../../shared/models/select-option.model';
+import { SelectOptionService } from '../../shared/services/select-option.service';
 
 @Component({
   standalone: true,
@@ -22,16 +25,21 @@ import { ReviewComponent } from "./reviews/review";
 export class ProductDetailComponent implements OnInit {
 
   private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
   private readonly productService = inject(ProductService);
   private readonly categoryService = inject(CategoryService);
   private readonly supplierService = inject(SupplierService);
   private readonly reviewService = inject(ReviewService);
+  protected readonly categoryOptions = signal<SelectOption[]>([]);
+  protected readonly supplierOptions = signal<SelectOption[]>([]);
+  private readonly selectOptionService = inject(SelectOptionService);
   category = signal<Category | null>(null)
   supplier = signal<Supplier | null>(null)
   readonly productId = signal<number>(Number(this.route.snapshot.paramMap.get('id')));
   protected readonly product = signal<Product | null>(null);
   protected readonly rating = signal<number | null>(null);
   protected readonly quantity = signal<number>(1);
+  protected readonly isEditing = signal<boolean>(false);
   protected readonly stars = [1, 2, 3, 4, 5];
 
   protected getStarClass(star: number): string {
@@ -46,7 +54,8 @@ export class ProductDetailComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.loadData()
+    this.loadData();
+    this.loadOptions();
   }
   
   loadData() {
@@ -70,7 +79,47 @@ export class ProductDetailComponent implements OnInit {
     });
   }
 
+  loadOptions() {
+    this.selectOptionService.getCategoryOptions().subscribe(categories => {
+      this.categoryOptions.set(categories);
+    });
+
+    this.selectOptionService.getSupplierOptions().subscribe(providers => {
+      this.supplierOptions.set(providers);
+    });
+  }
+
   addToCart() {
     console.log('Agregar al carrito', this.product(), this.quantity());
+  }
+
+  hasPermission() {
+    return hasEmployeePermission(Permission.productos, PermissionLevel.edit);
+  }
+
+  onEdit() {
+    this.isEditing.set(true);
+  }
+
+  onSave() {
+    const p = this.product();
+    if (!p) return;
+    this.productService.updateProduct(p).subscribe(() => {
+      this.loadData();
+      this.isEditing.set(false);
+    });
+  }
+
+  onCancel() {
+    this.loadData();
+    this.isEditing.set(false);
+  }
+
+  onDelete() {
+    const p = this.product();
+    if (!p || !p.id) return;
+    this.productService.deleteProduct(p.id).subscribe(() => {
+      this.router.navigate(['/product']);
+    });
   }
 }

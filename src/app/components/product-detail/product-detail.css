@@ -36,14 +36,55 @@
   color: #3B3B1A;
 }
 
+.product-title-edit {
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: #3B3B1A;
+  padding: 0.5rem;
+}
+
 .product-description {
   font-size: 1.1rem;
   color: #555;
 }
 
+.product-description-edit {
+  font-size: 1.1rem;
+  color: #555;
+  padding: 0.5rem;
+  min-height: 80px;
+}
+
 .meta {
   display: flex;
   gap: 1rem;
+}
+
+.meta-edit {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.select-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.select-group label {
+  font-weight: 600;
+  color: #3B3B1A;
+  font-size: 0.95rem;
+}
+
+.select-group .form-select {
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  background-color: white;
+  cursor: pointer;
 }
 
 .badge {
@@ -68,12 +109,46 @@
   color: #3B3B1A;
 }
 
+.price-edit {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+.price-edit input {
+  width: 150px;
+  font-size: 2rem;
+  font-weight: bold;
+  padding: 0.5rem;
+}
+
+.price-edit span {
+  color: #3B3B1A;
+}
+
 .actions {
   display: flex;
   align-items: center;
   justify-content: flex-end;
   gap: 1.5rem;
   margin-top: 1rem;
+}
+
+.stock-edit {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.stock-edit label {
+  font-weight: 600;
+  color: #3B3B1A;
+}
+
+.stock-edit input {
+  width: 120px;
 }
 
 .quantity-input {
@@ -89,6 +164,39 @@
   border-radius: 6px;
 }
 
+.edit-button {
+  background: #3B3B1A !important;
+  color: white !important;
+  height: 44px;
+  border-radius: 6px;
+}
+
+.edit-button:hover {
+  background: #5a5a2f !important;
+}
+
+.btn-save {
+  background: #28a745 !important;
+  color: white !important;
+  height: 44px;
+  border-radius: 6px;
+}
+
+.btn-save:hover {
+  background: #218838 !important;
+}
+
+.btn-cancel {
+  background: #dc3545 !important;
+  color: white !important;
+  height: 44px;
+  border-radius: 6px;
+}
+
+.btn-cancel:hover {
+  background: #c82333 !important;
+}
+
 .quantity-input[type="number"] {
   appearance: auto;
   -webkit-appearance: auto;
@@ -98,13 +206,4 @@
 .quantity-input[type="number"]::-webkit-inner-spin-button,
 .quantity-input[type="number"]::-webkit-outer-spin-button {
   opacity: 1;
-}
-
-.add-button {
-  background: #AEC8A4;
-  border: none;
-}
-
-.add-button:hover {
-  background: #3B3B1A;
 }
