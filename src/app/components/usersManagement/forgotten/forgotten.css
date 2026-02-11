@@ -1,4 +1,4 @@
-.login-list-container {
+.forgotten-list-container {
     margin-left: 30%;
     margin-right: 30%;
     justify-content: center;
@@ -6,7 +6,7 @@
     padding: 1rem;
 }
 
-.login-card {
+.forgotten-card {
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
@@ -14,7 +14,7 @@
 }
 
 /* Contenedor interno del formulario */
-.login-form {
+.forgotten-form {
     display: flex;
     flex-direction: column;
     gap: 1.2rem;
@@ -23,17 +23,17 @@
 }
 
 /* Ajuste fino para que los campos no queden demasiado separados */
-.login-form .field {
+.forgotten-form .field {
     margin-bottom: 0.3rem;
 }
 
 /* Ajuste del botón dentro del contenedor */
-.login-form .btn-other {
+.forgotten-form .btn-other {
     margin-top: 0.5rem;
 }
 
 
-.login-title {
+.forgotten-title {
     margin-bottom: 0.5rem;
 }
 
@@ -64,7 +64,7 @@
 form small.p-error {
     display: flex;
     justify-content: center;
-    background: rgb(255, 100, 100);
+    background: rgb(255, 92, 92);
     border-radius: 20px;
 }
 
@@ -114,7 +114,7 @@ form small.p-error {
 
 
 /* === Enlaces inferiores === */
-.login-links {
+.forgotten-links {
     margin-top: 0.5rem;
     text-align: center;
     font-size: 0.9rem;
@@ -124,12 +124,12 @@ form small.p-error {
     gap: 0.4rem;
 }
 
-.login-links a {
+.forgotten-links a {
     color: #2e7d32;
     cursor: pointer;
     font-weight: 500;
 }
 
-.login-links span a {
+.forgotten-links span a {
     font-weight: 600;
 }

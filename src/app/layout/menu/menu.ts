@@ -5,6 +5,7 @@ import { Menu } from 'primeng/menu';
 import { hasEmployeePermission, isClient, loggedIn, loginDataSignal, notLoggedIn, Permission, PermissionLevel } from '../../signals/loginData';
 import { LoginService } from '../../components/usersManagement/login/login.service';
 import { Router } from '@angular/router';
+import { UserComponentMode } from '../../components/usersManagement/register/userForm';
 
 @Component({
   selector: 'app-user-menu',
@@ -50,13 +51,11 @@ export class MenuComponent {
   }
 
   register() {
-    console.log('Ir a registro, Bloque 1');
-    // Navegar
+    this.router.navigate(['/user', UserComponentMode.register]);
   }
 
   editProfile() {
-    console.log('Ir a editar perfil, Bloque 1');
-    // Navegar
+    this.router.navigate(['/user', UserComponentMode.edit]);
   }
 
   manageRoles() {

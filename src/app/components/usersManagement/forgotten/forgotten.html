@@ -1,0 +1,31 @@
+<div class="forgotten-list-container">
+    <div class="forgotten-card">
+        <span class="forgotten-title">
+            Restaurar contraseña
+        </span>
+        <form [formGroup]="forgottenForm" (ngSubmit)="onSubmit()" class="forgotten-form">
+
+            <!-- E-mail -->
+            <div class="field">
+                <label for="email">E-mail</label>
+                <input id="email" type="email" pInputText formControlName="email" placeholder="email@email.com" />
+            </div>
+            <small *ngIf="email.invalid && (email.dirty || email.touched)" class="p-error">
+                El e-mail no es válido.
+            </small>
+
+
+            <!-- Botón Iniciar sesión -->
+            <button pButton type="submit" label="Enviar" class="w-full btn-other"
+                [disabled]="forgottenForm.invalid"></button>
+            <div *ngIf="forgottenError" class="p-error" style="margin-top: 1rem;"> Error en envío de correo. </div>
+            <div *ngIf="forgottenSuccess" class="p-error" style="margin-top: 1rem;"> Se ha enviado correo de
+                recuperación. </div>
+        </form>
+
+        <!-- Enlaces inferiores -->
+        <div class="forgotten-links">
+            <a (click)="onLogin()">Volver a login</a>
+        </div>
+    </div>
+</div>
