@@ -86,8 +86,14 @@
                 <button pButton label="Eliminar" icon="pi pi-trash" class="btn-delete" (click)="onDelete()"></button>
                 }
                 } @else {
+                @if (product()?.id === 0) {
+                <button pButton label="Crear" icon="pi pi-check" class="btn-save" (click)="onCreate()"></button>
+                <button pButton label="Cancelar" icon="pi pi-times" class="btn-cancel"
+                    (click)="router.navigate(['/product'])"></button>
+                } @else {
                 <button pButton label="Guardar" icon="pi pi-check" class="btn-save" (click)="onSave()"></button>
                 <button pButton label="Cancelar" icon="pi pi-times" class="btn-cancel" (click)="onCancel()"></button>
+                }
                 }
             </div>
         </div>

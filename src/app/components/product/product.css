@@ -95,6 +95,27 @@
   align-items: center;
 }
 
+.filter-actions-vertical {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  align-items: flex-end;
+}
+
+.filter-actions-vertical button {
+  width: 90px;
+}
+
+.new-product-button {
+  background: #829679 !important;
+  color: #ffffff !important;
+  border: none !important;
+}
+
+.new-product-button:hover {
+  background: #96b892 !important;
+}
+
 .filter-field .filter-input,
 .filter-field .filter-input .p-select-label,
 .filter-field .p-inputtext {

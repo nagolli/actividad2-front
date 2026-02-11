@@ -44,14 +44,23 @@
             </div>
           }
       </div>
-      <div class="filter-actions">
-        <button (click)="onSearch()" class="filter-button">Buscar</button>
-      </div>
     </form>
     <div class="view-toggle">
       <button class="view-toggle-btn" (click)="toggleView()">
         <i [class]="isGridView() ? 'pi pi-list' : 'pi pi-th-large'"></i>
       </button>
+    </div>
+    <div class="filter-actions-vertical">
+      @if (hasPermission()) {
+        <button pButton
+                type="button"
+                label="Añadir"
+                icon="pi pi-plus"
+                class="new-product-button"
+                (click)="onAddNewProduct()">
+        </button>
+      }
+      <button pButton type="button" icon="pi pi-search" (click)="onSearch()" class="filter-button">Buscar</button>
     </div>
   </div>
 @if(products().length > 0) {

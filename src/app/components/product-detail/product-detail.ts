@@ -25,7 +25,7 @@ import { SelectOptionService } from '../../shared/services/select-option.service
 export class ProductDetailComponent implements OnInit {
 
   private readonly route = inject(ActivatedRoute);
-  private readonly router = inject(Router);
+  readonly router = inject(Router);
   private readonly productService = inject(ProductService);
   private readonly categoryService = inject(CategoryService);
   private readonly supplierService = inject(SupplierService);
@@ -54,10 +54,29 @@ export class ProductDetailComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.loadData();
     this.loadOptions();
+
+    if (this.router.url.includes('/new')) {
+      // Nuevo producto
+      this.isEditing.set(true);
+      this.product.set({
+        id: 0,
+        name: '',
+        description: '',
+        price: '',
+        stock: 0,
+        image: '',
+        inactive: 1,
+        categoryId: 1,
+        supplierId: 1
+      } as Product);
+    } else {
+      this.productId.set(Number(this.route.snapshot.paramMap.get('id')));
+      this.loadData();
+    }
   }
-  
+
+
   loadData() {
     this.productService.getProduct(this.productId()).subscribe(product => {
       this.product.set(product);
@@ -122,4 +141,15 @@ export class ProductDetailComponent implements OnInit {
       this.router.navigate(['/product']);
     });
   }
+
+  onCreate() {
+    const p = this.product();
+    if (!p) return;
+
+    this.productService.createProduct(p).subscribe(() => {
+      this.router.navigate(['/product']);
+    });
+  }
+
+
 }

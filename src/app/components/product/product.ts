@@ -13,6 +13,7 @@ import { SelectOption } from '../../shared/models/select-option.model';
 import { SelectOptionService } from '../../shared/services/select-option.service';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { Router } from '@angular/router';
+import { hasEmployeePermission, Permission, PermissionLevel } from '../../signals/loginData';
 
 @Component({
   selector: 'app-product',
@@ -32,7 +33,7 @@ import { Router } from '@angular/router';
   ]
 })
 export class ProductComponent implements OnInit {
-  
+
   private readonly productService = inject(ProductService);
   private readonly router = inject(Router)
   private readonly selectOptionService = inject(SelectOptionService);
@@ -100,12 +101,20 @@ export class ProductComponent implements OnInit {
       min: formValue.priceRange[0],
       max: formValue.priceRange[1]
     };
-    
+
     this.isLoading.set(true);
     this.productService.filter(filters).subscribe(products => {
       this.products.set(products);
       this.isLoading.set(false);
     });
+  }
+
+  protected onAddNewProduct() {
+    this.router.navigate(['/product/new']);
+  }
+
+  protected hasPermission(): boolean {
+    return hasEmployeePermission(Permission.productos, PermissionLevel.edit);
   }
 
 }
