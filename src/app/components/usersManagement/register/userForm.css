@@ -1,0 +1,161 @@
+.user-list-container {
+    margin-left: 15%;
+    margin-right: 15%;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+}
+
+.user-card {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    width: 65%;
+}
+
+/* Contenedor interno del formulario */
+.user-form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    /* Espaciado uniforme entre campos */
+    width: 100%;
+}
+
+/* Ajuste fino para que los campos no queden demasiado separados */
+.user-form .field {
+    margin-bottom: 0.3rem;
+}
+
+/* Ajuste del botón dentro del contenedor */
+.user-form .btn-other {
+    margin-top: 0.5rem;
+}
+
+
+.user-title {
+    margin-bottom: 0.5rem;
+    grid-column: 1 / -1;
+}
+
+.field {
+    display: flex;
+    flex-direction: row;
+    gap: 0.4rem;
+    justify-content: space-between;
+    align-content: center;
+    align-items: center;
+}
+
+.field label {
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: #444;
+}
+
+.field input {
+    padding: 0.75rem;
+    border-radius: 6px !important;
+    border: 1px solid #ccc !important;
+    font-size: 0.95rem;
+    width: 70%;
+}
+
+form small.p-error {
+    display: flex;
+    justify-content: center;
+    background: rgb(255, 100, 100);
+    border-radius: 20px;
+}
+
+/* === Grupo de contraseña === */
+.p-inputgroup input {
+    padding: 0.75rem;
+    border-radius: 6px !important;
+    border: 1px solid #ccc !important;
+    font-size: 0.95rem;
+}
+
+.password-wrapper {
+    position: relative;
+    width: 70%;
+}
+
+.password-wrapper input {
+    width: 100%;
+    padding-right: 2.5rem !important;
+    /* espacio para el icono */
+}
+
+.password-wrapper .toggle-password {
+    position: absolute;
+    right: 0.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+    border: none !important;
+    background: transparent !important;
+    color: #666;
+    padding: 0;
+    width: 1.8rem;
+    height: 1.8rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.password-wrapper .toggle-password:hover {
+    background: transparent !important;
+    color: #333;
+}
+
+.btn-other {
+    padding: 0.9rem !important;
+}
+
+
+/* === Enlaces inferiores === */
+.login-links {
+    margin-top: 0.5rem;
+    text-align: center;
+    font-size: 0.9rem;
+    color: #555;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.login-links a {
+    color: #2e7d32;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+.login-links span a {
+    font-weight: 600;
+}
+
+.fieldWarn {
+    flex-direction: column;
+}
+
+.grid-2 {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.6rem 2rem;
+    /* espacio entre filas y columnas */
+}
+
+.grid-2 .field,
+.grid-2 small {
+    grid-column: span 1;
+}
+
+.grid-2 .fullRow {
+    grid-column: 1 / -1;
+    align-items: center;
+}
+
+.button-row {
+    display: flex;
+    justify-content: space-between;
+}

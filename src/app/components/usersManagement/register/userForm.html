@@ -1,132 +1,190 @@
-<div class="register-list-container">
-    <div class="register-card">
-        <span class="register-title">
+<div class="user-list-container">
+    <div class="user-card">
+        <span class="user-title">
             {{ mode === 'register' ? 'Registro de usuario' :
             mode === 'edit' ? 'Editar usuario' :
             'Datos mínimos' }}
         </span>
 
-        <form [formGroup]="userForm" (ngSubmit)="onSubmit()" class="register-form">
+        <form [formGroup]="userForm" (ngSubmit)="onSubmit()" class="user-form grid-2">
 
             <!-- Email -->
-            <div class="field">
-                <label for="email">E-mail</label>
-                <input id="email" type="email" pInputText formControlName="email" />
+            <div class="fieldWarn">
+                <div class="field">
+                    <label for="email">E-mail</label>
+                    <input id="email" type="email" pInputText formControlName="email" />
+                </div>
+                <small *ngIf="email.invalid && (email.dirty || email.touched)" class="p-error">
+                    El e-mail es obligatorio y debe ser válido.
+                </small>
             </div>
-            <small *ngIf="email.invalid && (email.dirty || email.touched)" class="p-error">
-                El e-mail es obligatorio y debe ser válido.
-            </small>
-
-            <!-- Nombre -->
-            <div class="field">
-                <label for="nombre">Nombre</label>
-                <input id="nombre" type="text" pInputText formControlName="nombre" />
-            </div>
-            <small *ngIf="nombre.invalid && (nombre.dirty || nombre.touched)" class="p-error">
-                El nombre es obligatorio.
-            </small>
-
-            <!-- Apellidos -->
-            <div class="field">
-                <label for="apellidos">Apellidos</label>
-                <input id="apellidos" type="text" pInputText formControlName="apellidos" />
-            </div>
-            <small *ngIf="apellidos.invalid && (apellidos.dirty || apellidos.touched)" class="p-error">
-                Los apellidos son obligatorios.
-            </small>
 
             <!-- Teléfono -->
-            <div class="field">
-                <label for="telefono">Teléfono</label>
-                <input id="telefono" type="text" pInputText formControlName="telefono" />
+            <div class="fieldWarn">
+                <div class="field">
+                    <label for="phone">Teléfono</label>
+                    <input id="phone" type="text" pInputText formControlName="phone" />
+                </div>
+                <small *ngIf="phone.invalid && (phone.dirty || phone.touched)" class="p-error">
+                    El teléfono es obligatorio.
+                </small>
             </div>
-            <small *ngIf="telefono.invalid && (telefono.dirty || telefono.touched)" class="p-error">
-                El teléfono es obligatorio.
-            </small>
+
+            <!-- Nombre -->
+            <div class="fieldWarn">
+                <div class="field">
+                    <label for="name">Nombre</label>
+                    <input id="name" type="text" pInputText formControlName="name" />
+                </div>
+                <small *ngIf="name.invalid && (name.dirty || name.touched)" class="p-error">
+                    El nombre es obligatorio.
+                </small>
+            </div>
+
+            <!-- Apellidos -->
+            <div class="fieldWarn">
+                <div class="field">
+                    <label for="surnames">Apellidos</label>
+                    <input id="surnames" type="text" pInputText formControlName="surnames" />
+                </div>
+                <small *ngIf="surnames.invalid && (surnames.dirty || surnames.touched)" class="p-error">
+                    Los apellidos son obligatorios.
+                </small>
+            </div>
 
             <!-- Contraseña (solo en Registro y Edición) -->
-            <div class="field" *ngIf="mode !== 'send'">
-                <label for="password">Contraseña</label>
+            <div class="fieldWarn">
+                <div class="field" *ngIf="mode !== 'send'">
+                    <label for="password">Contraseña</label>
 
-                <div class="password-wrapper">
-                    <input id="password" [type]="showPassword ? 'text' : 'password'" pInputText
-                        formControlName="password" />
-                    <button type="button" pButton class="toggle-password" (click)="togglePassword()"
-                        [icon]="showPassword ? 'pi pi-eye-slash' : 'pi pi-eye'">
-                    </button>
+                    <div class="password-wrapper">
+                        <input id="password" [type]="showPassword ? 'text' : 'password'" pInputText
+                            formControlName="password" />
+                        <button type="button" pButton class="toggle-password" (click)="togglePassword()"
+                            [icon]="showPassword ? 'pi pi-eye-slash' : 'pi pi-eye'">
+                        </button>
+                    </div>
                 </div>
+                <small *ngIf="password.invalid && (password.dirty || password.touched)" class="p-error">
+                    La contraseña requiere 8 carácteres.
+                </small>
             </div>
-            <small *ngIf="password.invalid && (password.dirty || password.touched)" class="p-error">
-                La contraseña es obligatoria.
-            </small>
+
+            <!-- Contraseña repetir -->
+            <div class="fieldWarn">
+                <div class="field" *ngIf="mode !== 'send'">
+                    <label for="password2">Repetir Contraseña</label>
+
+                    <div class="password-wrapper">
+                        <input id="password2" [type]="showPassword2 ? 'text' : 'password'" pInputText
+                            formControlName="password2" />
+                        <button type="button" pButton class="toggle-password" (click)="togglePassword2()"
+                            [icon]="showPassword2 ? 'pi pi-eye-slash' : 'pi pi-eye'">
+                        </button>
+                    </div>
+                </div>
+                <small *ngIf="userForm.errors?.['passwordMismatch'] && userForm.get('password2')?.touched"
+                    class="p-error">
+                    Las contraseñas no coinciden.
+                </small>
+            </div>
 
             <!-- Módulo de direcciones -->
-            <h4>Dirección</h4>
-            <div class="address-card">
+            <span class="user-title">Dirección</span>
 
-                <div class="address-fields">
 
-                    <div class="field">
-                        <label>Nombre</label>
-                        <input pInputText formControlName="name" />
-                    </div>
-
-                    <div class="field">
-                        <label>Calle</label>
-                        <input pInputText formControlName="street" />
-                    </div>
-
-                    <div class="field">
-                        <label>Número</label>
-                        <input pInputText formControlName="number" />
-                    </div>
-
-                    <div class="field">
-                        <label>Ciudad</label>
-                        <input pInputText formControlName="city" />
-                    </div>
-
-                    <div class="field">
-                        <label>Provincia</label>
-                        <input pInputText formControlName="province" />
-                    </div>
-
-                    <div class="field">
-                        <label>Código Postal</label>
-                        <input pInputText formControlName="postalCode" />
-                    </div>
-
-                    <div class="field">
-                        <label>País</label>
-                        <input pInputText formControlName="country" />
-                    </div>
-
-                    <div class="field">
-                        <label>Piso</label>
-                        <input pInputText formControlName="floor" />
-                    </div>
-
-                    <div class="field">
-                        <label>Puerta</label>
-                        <input pInputText formControlName="door" />
-                    </div>
-
-                    <div class="field">
-                        <label>Escalera</label>
-                        <input pInputText formControlName="staircase" />
-                    </div>
-
+            <div class="fieldWarn">
+                <div class="field">
+                    <label for="nameAddress">Nombre</label>
+                    <input id="nameAddress" pInputText formControlName="nameAddress" />
                 </div>
-
+                <small *ngIf="nameAddress.invalid && (nameAddress.dirty || nameAddress.touched)" class="p-error">
+                    El nombre de la dirección es obligatorio.
+                </small>
             </div>
 
-            <!-- Botones -->
-            <div class="button-row">
-                <button pButton type="submit" label="Validar" class="btn-other" [disabled]="userForm.invalid"></button>
 
-                <button pButton type="button" label="Cancelar" class="btn-cancel" (click)="onCancel()"></button>
+            <div class="fieldWarn">
+                <div class="field">
+                    <label for="country">País</label>
+                    <input id="country" pInputText formControlName="country" />
+                </div>
+                <small *ngIf="country.invalid && (country.dirty || country.touched)" class="p-error">
+                    El país es obligatorio.
+                </small>
             </div>
 
+            <div class="fieldWarn">
+                <div class="field">
+                    <label for="province">Provincia</label>
+                    <input id="province" pInputText formControlName="province" />
+                </div>
+                <small *ngIf="province.invalid && (province.dirty || province.touched)" class="p-error">
+                    La provincia es obligatoria.
+                </small>
+            </div>
+
+            <div class="fieldWarn">
+                <div class="field">
+                    <label for="postalCode">Código Postal</label>
+                    <input id="postalCode" pInputText formControlName="postalCode" />
+                </div>
+                <small *ngIf="postalCode.invalid && (postalCode.dirty || postalCode.touched)" class="p-error">
+                    El código postal es obligatorio.
+                </small>
+            </div>
+
+            <div class="fieldWarn">
+                <div class="field">
+                    <label for="city">Ciudad</label>
+                    <input id="city" pInputText formControlName="city" />
+                </div>
+                <small *ngIf="city.invalid && (city.dirty || city.touched)" class="p-error">
+                    La ciudad es obligatoria.
+                </small>
+            </div>
+
+            <div class="fieldWarn">
+                <div class="field">
+                    <label for="street">Calle</label>
+                    <input id="street" pInputText formControlName="street" />
+                </div>
+                <small *ngIf="street.invalid && (street.dirty || street.touched)" class="p-error">
+                    La calle es obligatoria.
+                </small>
+            </div>
+
+            <div class="fieldWarn">
+                <div class="field">
+                    <label for="number">Número</label>
+                    <input id="number" pInputText formControlName="number" />
+                </div>
+                <small *ngIf="number.invalid && (number.dirty || number.touched)" class="p-error">
+                    El número es obligatorio.
+                </small>
+            </div>
+
+            <div class="field">
+                <label for="floor">Piso</label>
+                <input id="floor" pInputText formControlName="floor" />
+            </div>
+
+            <div class="field">
+                <label for="door">Puerta</label>
+                <input id="door" pInputText formControlName="door" />
+            </div>
+
+            <div class="field">
+                <label for="staircase">Escalera</label>
+                <input id="staircase" pInputText formControlName="staircase" />
+            </div>
+            <div class="button-row fullRow">
+                <button pButton type="submit" label="Validar" class="btn-edit" [disabled]="userForm.invalid"></button>
+
+                <button pButton type="button" label="Cancelar" class="btn-delete" (click)="onCancel()"></button>
+            </div>
+            <div *ngIf="formError" class="p-error" style="margin-top: 1rem;"> Error en la operación. </div>
         </form>
+
     </div>
 </div>
