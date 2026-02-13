@@ -51,11 +51,14 @@ export class MenuComponent {
   }
 
   register() {
-    this.router.navigate(['/user', UserComponentMode.register]);
+    this.router.navigate(['/user', UserComponentMode.registerClient]);
   }
 
   editProfile() {
-    this.router.navigate(['/user', UserComponentMode.edit]);
+    if (isClient())
+      this.router.navigate(['/user', UserComponentMode.editClient]);
+    else
+      this.router.navigate(['/user', UserComponentMode.editEmployee]);
   }
 
   manageRoles() {

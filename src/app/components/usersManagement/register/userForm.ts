@@ -1,14 +1,18 @@
-import { Component, Input, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, Input, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, AbstractControl } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
-import { Router } from '@angular/router';
-import { PostAddressData, PostClientData, RegisterService } from './user.service'
+import { ActivatedRoute, Router } from '@angular/router';
+import { PostAddressData, PostUserData, UserService } from './user.service'
+import { getClientId, getEmployeeId } from '../../../signals/loginData';
+import { forkJoin } from 'rxjs';
 
 export enum UserComponentMode {
-    register = 'register',
-    edit = 'edit',
+    registerClient = 'registerClient',
+    editClient = 'editClient',
+    registerEmployee = 'registerEmployee',
+    editEmployee = 'editEmployee',
     onlyToSend = 'send'
 }
 
@@ -25,12 +29,16 @@ export enum UserComponentMode {
 })
 export class UserComponent {
 
-    @Input() mode: UserComponentMode = UserComponentMode.register;
+    @Input() mode: UserComponentMode = UserComponentMode.registerClient;
+    @Input() employeeId: number = getEmployeeId() || 0;
 
-    private registerService = inject(RegisterService);
+    private userService = inject(UserService);
     private fb = inject(FormBuilder);
     private router = inject(Router);
+    private route = inject(ActivatedRoute);
+    private cd = inject(ChangeDetectorRef);
     formError = false;
+    private addressId = 0;
 
     private passwordsMatch(group: AbstractControl) {
         const password = group.get('password')?.value;
@@ -60,16 +68,17 @@ export class UserComponent {
             updateOn: 'blur'
         }],
     }, {
-        validators: this.passwordsMatch
+        validators: this.mode == UserComponentMode.registerClient ? this.passwordsMatch : undefined
     });
 
     showPassword = false;
     showPassword2 = false;
 
     ngOnInit() {
-        if (this.mode === UserComponentMode.edit) {
+        this.mode = this.route.snapshot.data['mode'];
+        if (this.mode === UserComponentMode.editClient || this.mode === UserComponentMode.editEmployee) {
+            this.loadData();
             this.userForm.get('password')?.clearValidators();
-            this.userForm.get('password2')?.clearValidators();
         }
 
         if (this.mode === UserComponentMode.onlyToSend) {
@@ -80,6 +89,63 @@ export class UserComponent {
 
         this.userForm.updateValueAndValidity();
     }
+
+    loadData() {
+        if (this.mode === UserComponentMode.editClient) {
+            this.userService.getClientData().subscribe({
+                next: (response) => {
+                    const data = response.data;
+                    this.addressId = data.addresses[0]?.id;
+                    this.userForm.patchValue({
+                        email: data.email,
+                        name: data.name,
+                        surnames: data.surname,
+                        phone: data.phone,
+                        nameAddress: data.addresses[0]?.name,
+                        street: data.addresses[0]?.street,
+                        number: data.addresses[0]?.number,
+                        city: data.addresses[0]?.city,
+                        province: data.addresses[0]?.province,
+                        postalCode: data.addresses[0]?.postalCode,
+                        country: data.addresses[0]?.country,
+                        floor: data.addresses[0]?.floor,
+                        door: data.addresses[0]?.door,
+                        staircase: data.addresses[0]?.staircase
+                    });
+                    this.cd.detectChanges();
+                    console.log("Formulario tras patch:", this.userForm.value);
+                },
+                error: () => console.log("Error getting user data")
+            });
+        } else {
+            this.userService.getEmployeeData(this.employeeId).subscribe({
+                next: (response) => {
+                    const data = response.data;
+                    this.addressId = data.addresses[0]?.id;
+                    this.userForm.patchValue({
+                        email: data.email,
+                        name: data.name,
+                        surnames: data.surname,
+                        phone: data.phone,
+                        nameAddress: data.addresses[0]?.name,
+                        street: data.addresses[0]?.street,
+                        number: data.addresses[0]?.number,
+                        city: data.addresses[0]?.city,
+                        province: data.addresses[0]?.province,
+                        postalCode: data.addresses[0]?.postalCode,
+                        country: data.addresses[0]?.country,
+                        floor: data.addresses[0]?.floor,
+                        door: data.addresses[0]?.door,
+                        staircase: data.addresses[0]?.staircase
+                    });
+                    this.cd.detectChanges();
+                    console.log("Formulario tras patch:", this.userForm.value);
+                },
+                error: () => console.log("Error getting user data")
+            });
+        }
+    }
+
 
     get email() { return this.userForm.get('email')!; }
     get name() { return this.userForm.get('name')!; }
@@ -105,13 +171,11 @@ export class UserComponent {
     }
 
     onSubmit() {
-        debugger;
         if (this.userForm.invalid) {
             this.userForm.markAllAsTouched();
             return;
         }
 
-        console.log("Datos del formulario:", this.userForm.value);
         const address: PostAddressData = {
             street: this.userForm.value.street,
             number: this.userForm.value.number,
@@ -119,38 +183,59 @@ export class UserComponent {
             province: this.userForm.value.province,
             postalCode: this.userForm.value.postalCode,
             country: this.userForm.value.country,
-            floor: this.userForm.value.floor,
-            door: this.userForm.value.door,
-            staircase: this.userForm.value.staircase
+            floor: this.userForm.value.floor || undefined,
+            door: this.userForm.value.door || undefined,
+            staircase: this.userForm.value.staircase || undefined
         };
-        const client: PostClientData = {
+        const client: PostUserData = {
             email: this.userForm.value.email,
             name: this.userForm.value.name,
             surname: this.userForm.value.surnames,
-            phone: this.userForm.value.phone,
-            password: this.userForm.value.password
+            phone: this.userForm.value.phone || undefined,
+            password: this.userForm.value.password || undefined
         };
-
-        //TODO, POR LO MENOS EL ERROR DE CORREO DUPLICADO DEBERIA MOSTRARLO
-        this.registerService.createUserAndAddress(client,
-            this.userForm.value.nameAddress,
-            address).subscribe({
-                next: (response: any) => {
-                    if (response) {
-                        this.router.navigate(['/login']);
-                    } else {
+        if (this.mode == UserComponentMode.registerClient) {
+            this.userService.createUserAndAddress(client,
+                this.userForm.value.nameAddress,
+                address).subscribe({
+                    next: (response: any) => {
+                        if (response) {
+                            this.router.navigate(['/login']);
+                        } else {
+                            this.formError = true;
+                            this.userForm.reset();
+                        }
+                    },
+                    error: (err: any) => {
                         this.formError = true;
                         this.userForm.reset();
                     }
+                });
+        } else if (this.mode == UserComponentMode.editClient || this.mode == UserComponentMode.editEmployee) {
+            const updateAddress$ = this.userService.updateAddress(address, this.addressId);
+            const updateUser$ = this.mode == UserComponentMode.editClient ? this.userService.updateUser(client, getClientId() || 0) : this.userService.updateEmployee(client, [], this.employeeId);
+            forkJoin([updateAddress$, updateUser$]).subscribe({
+                next: ([addressResponse, userResponse]) => {
+                    this.router.navigate(['/product']);
                 },
-                error: (err: any) => {
+                error: (err) => {
+                    // Si cualquiera falla, entra aquí
+                    console.error("Error en alguna petición", err);
                     this.formError = true;
                     this.userForm.reset();
                 }
             });
+        }
+
     }
 
     onCancel() {
-        this.router.navigate(['/login']);
+        switch (this.mode) {
+            case UserComponentMode.registerClient: this.router.navigate(['/login']); break;
+            case UserComponentMode.editClient: this.router.navigate(['/product']); break;
+            case UserComponentMode.editEmployee: this.router.navigate(['/product']); break;
+            case UserComponentMode.registerEmployee: this.router.navigate(['/employees']); break;
+            case UserComponentMode.onlyToSend: this.router.navigate(['/product']); break;
+        }
     }
 }

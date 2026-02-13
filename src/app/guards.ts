@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate, Router } from '@angular/router';
-import { hasEmployeePermission, isClient, loggedIn, notLoggedIn, Permission, PermissionLevel } from './signals/loginData';
+import { hasEmployeePermission, isClient, isEmployee, loggedIn, notLoggedIn, Permission, PermissionLevel } from './signals/loginData';
 
 class CommonGuard implements CanActivate {
     protected router = inject(Router);
@@ -37,6 +37,17 @@ export class LoggedGuard extends CommonGuard {
 export class ClientGuard extends CommonGuard {
     override canActivate(): boolean {
         if (!isClient()) {
+            this.router.navigate(['/']);
+            return false;
+        }
+        return true;
+    }
+}
+
+@Injectable({ providedIn: 'root' })
+export class EmployeeGuard extends CommonGuard {
+    override canActivate(): boolean {
+        if (!isEmployee()) {
             this.router.navigate(['/']);
             return false;
         }

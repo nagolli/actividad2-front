@@ -73,6 +73,6 @@ export class LoginComponent {
 
     onRegister(): void {
         //navegar a registro
-        this.router.navigate(['/user', UserComponentMode.register]);
+        this.router.navigate(['/user', UserComponentMode.registerClient]);
     }
 }

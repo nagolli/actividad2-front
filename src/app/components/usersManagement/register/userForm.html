@@ -1,8 +1,9 @@
 <div class="user-list-container">
     <div class="user-card">
         <span class="user-title">
-            {{ mode === 'register' ? 'Registro de usuario' :
-            mode === 'edit' ? 'Editar usuario' :
+            {{ mode === 'registerClient' ? 'Registro de usuario' :
+            mode === 'registerEmployee' ? 'Alta de empleado' :
+            mode === 'editClient' || mode === 'editEmployee' ? 'Editar usuario' :
             'Datos mínimos' }}
         </span>
 
@@ -72,7 +73,7 @@
 
             <!-- Contraseña repetir -->
             <div class="fieldWarn">
-                <div class="field" *ngIf="mode !== 'send'">
+                <div class="field" *ngIf="mode !== 'send' && mode !== 'registerEmployee'">
                     <label for="password2">Repetir Contraseña</label>
 
                     <div class="password-wrapper">
