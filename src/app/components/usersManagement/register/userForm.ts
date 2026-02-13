@@ -38,6 +38,7 @@ export class UserComponent {
     private route = inject(ActivatedRoute);
     private cd = inject(ChangeDetectorRef);
     formError = false;
+    currentError = "Error desconocido.";
     private addressId = 0;
 
     private passwordsMatch(group: AbstractControl) {
@@ -198,16 +199,22 @@ export class UserComponent {
             this.userService.createUserAndAddress(client,
                 this.userForm.value.nameAddress,
                 address).subscribe({
-                    next: (response: any) => {
-                        if (response) {
+                    next: (response: boolean | string) => {
+                        if (response === true) {
                             this.router.navigate(['/login']);
                         } else {
                             this.formError = true;
+                            if (response) {
+                                this.currentError = response;
+                            } else {
+                                this.currentError = "Error en la operación."
+                            }
                             this.userForm.reset();
                         }
                     },
                     error: (err: any) => {
                         this.formError = true;
+                        this.currentError = "Error en la operación."
                         this.userForm.reset();
                     }
                 });
@@ -219,9 +226,8 @@ export class UserComponent {
                     this.router.navigate(['/product']);
                 },
                 error: (err) => {
-                    // Si cualquiera falla, entra aquí
-                    console.error("Error en alguna petición", err);
                     this.formError = true;
+                    this.currentError = "Error en la operación."
                     this.userForm.reset();
                 }
             });

@@ -74,13 +74,18 @@ export class UserService {
         client: PostUserData,
         addressName: string,
         address: PostAddressData
-    ): Observable<boolean> {
+    ): Observable<boolean | string> {
         return this.createAddress(address).pipe(
             switchMap((addressId: number) => {
                 return this.createUser(client, addressId, addressName);
             }),
             catchError(error => {
                 console.error('Error en createUserAndAddress:', error);
+                if (error.status === 422 && error.error?.errors) {
+                    const errores = Object.values(error.error.errors)
+                        .map((e: any) => e.join(', ')).join(' | ');
+                    return of(errores)
+                }
                 return of(false);
             })
         );
@@ -91,13 +96,18 @@ export class UserService {
         addressName: string,
         address: PostAddressData,
         roles: number[]
-    ): Observable<boolean> {
+    ): Observable<boolean | string> {
         return this.createAddress(address).pipe(
             switchMap((addressId: number) => {
                 return this.createEmployee(client, addressId, addressName, roles);
             }),
             catchError(error => {
                 console.error('Error en createUserAndAddress:', error);
+                if (error.status === 422 && error.error?.errors) {
+                    const errores = Object.values(error.error.errors)
+                        .map((e: any) => e.join(', ')).join(' | ');
+                    return of(errores)
+                }
                 return of(false);
             })
         );
@@ -107,7 +117,7 @@ export class UserService {
         client: PostUserData,
         addressId: number,
         addressName: string
-    ): Observable<boolean> {
+    ): Observable<boolean | string> {
         const body = {
             ...client,
             addresses: [
@@ -120,7 +130,13 @@ export class UserService {
         return this.http.post(`${environment.apiUrl}/client`, body).pipe(
             map(() => true),
             catchError(error => {
+                debugger
                 console.error('Error al crear usuario:', error);
+                if (error.status === 422 && error.error?.errors) {
+                    const errores = Object.values(error.error.errors)
+                        .map((e: any) => e.join(', ')).join(' ');
+                    return of(errores)
+                }
                 return of(false);
             })
         );
@@ -131,7 +147,7 @@ export class UserService {
         addressId: number,
         addressName: string,
         roles: number[]
-    ): Observable<boolean> {
+    ): Observable<boolean | string> {
         const body = {
             ...employee,
             addresses: [
@@ -146,6 +162,11 @@ export class UserService {
             map(() => true),
             catchError(error => {
                 console.error('Error al crear empleado:', error);
+                if (error.status === 422 && error.error?.errors) {
+                    const errores = Object.values(error.error.errors)
+                        .map((e: any) => e.join(', ')).join(' | ');
+                    return of(errores)
+                }
                 return of(false);
             })
         );

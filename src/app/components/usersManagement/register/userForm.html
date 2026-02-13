@@ -184,7 +184,7 @@
 
                 <button pButton type="button" label="Cancelar" class="btn-delete" (click)="onCancel()"></button>
             </div>
-            <div *ngIf="formError" class="p-error" style="margin-top: 1rem;"> Error en la operación. </div>
+            <div *ngIf="formError" class="p-error" style="margin-top: 1rem;"> {{currentError}} </div>
         </form>
 
     </div>
