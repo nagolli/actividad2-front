@@ -14,7 +14,7 @@ export class HeaderComponent {
 
   constructor(private router: Router) { }
 
-  go(route: string) {
+  go(route: string) {    
     this.router.navigate([route]);
   }
 

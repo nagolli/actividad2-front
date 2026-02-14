@@ -1,0 +1,41 @@
+<div class="cart-container">
+  <h2>Mi carrito</h2>
+
+  @if (items.length === 0) {
+    <div class="empty-cart">
+      <p>No hay productos en el carrito.</p>
+    </div>
+  }
+
+  @if (items.length > 0) {
+    <div class="cart-grid">
+      @for (item of items; track item.id) {
+        <p-card class="cart-item-card">
+          <div class="item-info">
+            <div class="item-name">{{ item.name }}</div>
+            <div class="item-price">{{ item.price | currency }}</div>
+            <div class="item-quantity">{{ item.quantity }}</div>            
+            <div class="item-total">Total: {{ item.price * item.quantity | currency }}</div>
+            <button pButton type="button" icon="pi pi-trash" class="p-button-danger" (click)="remove(item.id)"></button>
+          </div>
+        </p-card>
+      }
+    </div>
+
+    <div class="checkout-form">
+      <input type="email" placeholder="Email" [(ngModel)]="email">
+      <input type="number" placeholder="Address ID" [(ngModel)]="addressId">
+
+      <div class="cart-summary">
+        <span>Total: {{ total() | currency }}</span>
+        <button pButton type="button" label="Comprar" class="p-button-success" (click)="checkout()" [disabled]="processing()"> </button>
+        @if (processing()) {
+          <span class="loading-text">Procesando...</span>
+        }
+        @if (message()) {
+          <div class="toast">{{ message() }}</div>                
+        }
+      </div>
+    </div>
+  }
+</div>

@@ -1,0 +1,24 @@
+@if (loading()) {
+  <p>Cargando reseñas...</p>
+} @else {
+  @if (error()) {
+    <div class="error">{{ error() }}</div>
+  } @else {
+
+    <!-- Lista de reviews -->
+    @if (reviews().length > 0) {
+      @for (review of reviews(); track review.productId + '-' + review.rating) {
+        <div class="review-item">
+          <h4 class="review-user">
+            {{ review.user?.name ?? 'Usuario anónimo' }}
+          </h4>
+
+          <!-- Texto de la review -->
+          <p class="review-comment">{{ review.review }}</p>
+        </div>
+      }
+    } @else {
+      <p>No hay reseñas para este producto.</p>
+    }
+  }
+}

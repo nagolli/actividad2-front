@@ -7,8 +7,13 @@ import { Permission, PermissionLevel } from './signals/loginData';
 import { SupplierComponent } from './components/supplier/supplier';
 import { CategoryComponent } from './components/category/category';
 import { ProductDetailComponent } from './components/product-detail/product-detail';
+import { CartComponent } from './components/cart/cart';
 
 export const routes: Routes = [
+  {
+    path: 'cart',
+    component: CartComponent
+  },  
   {
     path: 'product',
     component: ProductComponent

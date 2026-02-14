@@ -14,6 +14,7 @@ import { ReviewComponent } from "./reviews/review";
 import { Permission, PermissionLevel, hasEmployeePermission } from '../../signals/loginData';
 import { SelectOption } from '../../shared/models/select-option.model';
 import { SelectOptionService } from '../../shared/services/select-option.service';
+import { CartService } from '../cart/cart.service';
 
 @Component({
   standalone: true,
@@ -24,6 +25,7 @@ import { SelectOptionService } from '../../shared/services/select-option.service
 })
 export class ProductDetailComponent implements OnInit {
 
+  private readonly cartService = inject(CartService);
   private readonly route = inject(ActivatedRoute);
   readonly router = inject(Router);
   private readonly productService = inject(ProductService);
@@ -41,6 +43,7 @@ export class ProductDetailComponent implements OnInit {
   protected readonly quantity = signal<number>(1);
   protected readonly isEditing = signal<boolean>(false);
   protected readonly stars = [1, 2, 3, 4, 5];
+  protected message = signal<string>('');
 
   protected getStarClass(star: number): string {
     const value = this.rating() ?? 0;
@@ -63,7 +66,7 @@ export class ProductDetailComponent implements OnInit {
         id: 0,
         name: '',
         description: '',
-        price: '',
+        price: 0,
         stock: 0,
         image: '',
         inactive: 1,
@@ -108,8 +111,23 @@ export class ProductDetailComponent implements OnInit {
     });
   }
 
-  addToCart() {
-    console.log('Agregar al carrito', this.product(), this.quantity());
+  addToCart() {    
+    const prod = this.product();
+    const qty = this.quantity();
+    if (!prod) return;
+    if (!qty) return; 
+
+    this.cartService.addProduct({
+      id: prod.id,
+      name: prod.name,
+      price: prod.price,
+      quantity: qty
+    });
+    //console.log('Agregar al carrito', this.product(), this.quantity());
+    //this.messageService.add({severity:'success', summary:'Éxito', detail:'Producto agregado al carrito'});
+    this.message.set(`Se agrego ${qty} ${prod.name}(s)`)
+    // Quitar mensaje en 3 segundos...
+    setTimeout(() => this.message.set(''), 3000);
   }
 
   hasPermission() {

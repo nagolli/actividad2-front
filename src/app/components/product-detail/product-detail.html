@@ -80,7 +80,11 @@
                 @if (!hasPermission()) {
                 <input type="number" class="form-control quantity-input" [ngModel]="quantity()"
                     (ngModelChange)="quantity.set($event)" [min]="1" [max]="product()!.stock" />
-                <button pButton class="add-button" label="Agregar al carrito" (click)="addToCart()"></button>
+                    
+                    <button pButton class="add-button" label="Agregar al carrito" (click)="addToCart()"></button>                
+                    @if (message()) {
+                        <div class="toast">{{ message() }}</div>                
+                    }
                 } @else {
                 <button pButton class="edit-button" label="Editar" icon="pi pi-pencil" (click)="onEdit()"></button>
                 <button pButton label="Eliminar" icon="pi pi-trash" class="btn-delete" (click)="onDelete()"></button>
@@ -99,6 +103,5 @@
         </div>
     </div>
 </div>
-
 <app-review [idProduct]="productId()"></app-review>
 }
