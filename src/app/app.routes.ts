@@ -8,6 +8,7 @@ import { Permission, PermissionLevel } from './signals/loginData';
 import { UserComponent, UserComponentMode } from './components/usersManagement/register/userForm';
 import { SupplierComponent } from './components/supplier/supplier';
 import { CategoryComponent } from './components/category/category';
+import { EmployeeListComponent } from './components/usersManagement/employees/list/employeeList';
 
 export const routes: Routes = [
   {
@@ -66,5 +67,11 @@ export const routes: Routes = [
     component: RoleListComponent,
     canActivate: [PermissionGuard],
     data: { permission: Permission.roles, level: PermissionLevel.read }
+  },
+  {
+    path: 'employees',
+    component: EmployeeListComponent,
+    canActivate: [PermissionGuard],
+    data: { permission: Permission.empleados, level: PermissionLevel.read }
   }
 ];

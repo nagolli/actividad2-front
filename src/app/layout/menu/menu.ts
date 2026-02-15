@@ -66,8 +66,7 @@ export class MenuComponent {
   }
 
   manageEmployees() {
-    console.log('Ir a gestionar empleados, Bloque 1');
-    // Navegar
+    this.router.navigate(['/employees']);
   }
 
   manageCategories() {

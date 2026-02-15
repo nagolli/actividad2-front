@@ -1,0 +1,22 @@
+<p-card class="item-card">
+    <div class="first-row">
+        <h3 class="title">
+            {{ name }}
+            <i *ngIf="!enabled" class="pi pi-ban"></i>
+        </h3>
+    </div>
+
+    <div class="second-row">
+        <div class="permission-description">
+            {{ description }}
+        </div>
+
+        <div class="employee-buttons">
+            <p-button label="Dar de baja" styleClass="btn-delete" (onClick)="onDelete()"
+                *ngIf="hasPermission() && enabled"></p-button>
+            <p-button label="Recuperar" styleClass="btn-delete" (onClick)="onRestore()"
+                *ngIf="hasPermission() && !enabled"></p-button>
+            <p-button label="Editar" styleClass="btn-edit" (onClick)="onEdit()" *ngIf="hasPermission()"></p-button>
+        </div>
+    </div>
+</p-card>

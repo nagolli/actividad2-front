@@ -4,66 +4,7 @@ import { inject, Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { map, catchError, switchMap, tap } from 'rxjs/operators';
 import { getClientId } from '../../../signals/loginData';
-
-export interface PostUserData {
-    email: string;
-    name: string;
-    surname: string;
-    phone: string;
-    password: string;
-}
-
-export interface AddressResponse {
-    data: GetAddressData;
-}
-
-export interface PostAddressData {
-    street: string;
-    city: string;
-    postalCode: string;
-    province: string;
-    country: string;
-    number: string;
-    floor?: string;
-    door?: string;
-    staircase?: string;
-}
-
-export interface GetAddressData {
-    id: number;
-    name?: string;
-    street: string;
-    city: string;
-    postalCode: string;
-    province: string;
-    country: string;
-    number: string;
-    floor?: string;
-    door?: string;
-    staircase?: string;
-}
-
-export interface GetClientResponse {
-    data: {
-        email: string;
-        name: string;
-        surname: string;
-        phone: string;
-        addresses: GetAddressData[],
-    }
-}
-
-export interface GetEmployeeResponse {
-    data: {
-        email: string;
-        name: string;
-        surname: string;
-        phone: string;
-        addresses: GetAddressData[],
-        roles: { name: string, id: number }[]
-    }
-}
-
+import { AddressResponse, GetClientResponse, GetEmployeeResponse, PostAddressData, PostUserData } from './userInterfaces'
 
 @Injectable({
     providedIn: 'root'

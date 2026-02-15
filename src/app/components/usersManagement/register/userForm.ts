@@ -4,7 +4,8 @@ import { CommonModule } from '@angular/common';
 import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
 import { ActivatedRoute, Router } from '@angular/router';
-import { PostAddressData, PostUserData, UserService } from './user.service'
+import { PostAddressData, PostUserData } from './userInterfaces'
+import { UserService } from './user.service'
 import { getClientId, getEmployeeId } from '../../../signals/loginData';
 import { forkJoin } from 'rxjs';
 
