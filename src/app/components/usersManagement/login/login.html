@@ -9,10 +9,10 @@
             <div class="field">
                 <label for="email">E-mail</label>
                 <input id="email" type="email" pInputText formControlName="email" placeholder="email@email.com" />
-                <small *ngIf="email.invalid && (email.dirty || email.touched)" class="p-error">
-                    El e-mail no es válido.
-                </small>
             </div>
+            <small *ngIf="email.invalid && (email.dirty || email.touched)" class="p-error">
+                El e-mail no es válido.
+            </small>
 
             <!-- Contraseña -->
             <div class="field">
@@ -25,11 +25,10 @@
                         [icon]="showPassword ? 'pi pi-eye-slash' : 'pi pi-eye'">
                     </button>
                 </div>
-
-                <small *ngIf="password.invalid && (password.dirty || password.touched)" class="p-error">
-                    La contraseña es obligatoria.
-                </small>
             </div>
+            <small *ngIf="password.invalid && (password.dirty || password.touched)" class="p-error">
+                La contraseña es obligatoria.
+            </small>
 
 
             <!-- Botón Iniciar sesión -->

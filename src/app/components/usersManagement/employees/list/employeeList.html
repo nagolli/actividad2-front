@@ -1,0 +1,19 @@
+<div class="employees-list-container">
+    <div class="employees-header">
+        <div class="search-container">
+            <input pInputText type="text" placeholder="Buscar" [(ngModel)]="searchTerm" />
+        </div>
+        <span class="employees-title">{{ tableName }}</span>
+        <p-button label="Añadir empleado" styleClass="btn-add" icon="pi pi-plus" (onClick)="onNew()"
+            *ngIf="hasPermission()"></p-button>
+    </div>
+
+    <div class="employees-list">
+        <ng-container *ngFor="let employee of filteredEmployees">
+            <app-employee-item [name]="employee.title()" [description]="employee.description()"
+                [enabled]="employee.enabled" (edit)="onEdit(employee)" (delete)="onDelete(employee)"
+                (restore)="onRestore(employee)">
+            </app-employee-item>
+        </ng-container>
+    </div>
+</div>

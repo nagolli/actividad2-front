@@ -6,6 +6,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
 import { Router } from '@angular/router';
 import { LoginService } from './login.service';
+import { UserComponentMode } from '../register/userForm';
 
 @Component({
     selector: 'app-login',
@@ -66,12 +67,12 @@ export class LoginComponent {
     }
 
     onForgotPassword(): void {
-        // Navegar a la pantalla de recuperación o abrir un diálogo
-        console.log('Ir a recuperar contraseña');
+        // Navegar a la pantalla de recuperación
+        this.router.navigate(["/forgotten"])
     }
 
     onRegister(): void {
-        // Navegar a la pantalla de registro
-        console.log('Ir a registro');
+        //navegar a registro
+        this.router.navigate(['/user', UserComponentMode.registerClient]);
     }
 }

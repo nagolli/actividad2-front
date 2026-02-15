@@ -50,7 +50,7 @@
     border-color: #AEC8A2 !important;
 }
 
-.roles-list {
+[class$="-list"] {
     display: flex;
     flex-direction: column;
     gap: 1rem;

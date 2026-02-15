@@ -50,9 +50,19 @@ export function isClient(): boolean {
     return loginData?.isClient ?? false;
 }
 
+export function isEmployee(): boolean {
+    const loginData = loginDataSignal();
+    return loginData?.isEmployee ?? false;
+}
+
 export function getClientId(): number | null {
     const loginData = loginDataSignal();
     return loginData?.isClient ? loginData.userId : null;
+}
+
+export function getEmployeeId(): number | null {
+    const loginData = loginDataSignal();
+    return loginData?.isEmployee ? loginData.userId : null;
 }
 
 export function notLoggedIn(): boolean {
