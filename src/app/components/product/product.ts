@@ -5,7 +5,7 @@ import { PriceRange, Product, ProductFilters } from './product.models';
 import { CardModule } from 'primeng/card';
 import { AvatarModule } from 'primeng/avatar';
 import { ButtonModule } from 'primeng/button';
-import { CommonModule } from '@angular/common';
+import { CommonModule, CurrencyPipe } from '@angular/common';
 import { SliderModule } from 'primeng/slider';
 import { InputTextModule } from 'primeng/inputtext';
 import { SelectModule } from 'primeng/select';
@@ -21,6 +21,7 @@ import { hasEmployeePermission, Permission, PermissionLevel } from '../../signal
   styleUrl: './product.css',
   standalone: true,
   imports: [
+    CurrencyPipe,
     CardModule,
     AvatarModule,
     ButtonModule,
