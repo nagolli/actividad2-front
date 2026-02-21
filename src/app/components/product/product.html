@@ -39,8 +39,8 @@
           @if (priceRangeLoaded()) {
             <p-slider formControlName="priceRange" [range]="true" [min]="priceRange().min" [max]="priceRange().max" ariaLabel="Rango de precio"></p-slider>
             <div class="range-values">
-              <span>{{ filtersForm.controls.priceRange.value[0] }} €</span>
-              <span>{{ filtersForm.controls.priceRange.value[1] }} €</span>
+              <span>{{ filtersForm.controls.priceRange.value[0] | currency:'EUR' }}</span>
+              <span>{{ filtersForm.controls.priceRange.value[1] | currency:'EUR' }}</span>
             </div>
           }
       </div>
@@ -79,7 +79,7 @@
           
           <div class="product-info">
             <div class="product-name">{{ product.name }}</div>
-            <span class="product-price">{{ product.price }} €</span>
+            <span class="product-price">{{ product.price | currency:'EUR' }} </span>
           </div>
         </p-card>
       }
@@ -99,7 +99,7 @@
               <div class="product-name">{{ product.name }}</div>
               <p class="product-description">{{ product.description }}</p>
             </div>
-            <div class="list-item-price">{{ product.price }} €</div>
+            <div class="list-item-price">{{ product.price | currency:'EUR' }} </div>
           </div>
         </p-card>
       }
