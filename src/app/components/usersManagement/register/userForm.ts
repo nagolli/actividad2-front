@@ -8,6 +8,7 @@ import { PostAddressData, PostUserData } from './userInterfaces'
 import { UserService } from './user.service'
 import { getClientId, getEmployeeId } from '../../../signals/loginData';
 import { forkJoin } from 'rxjs';
+import { UserCallbackService } from './userCallback.service';
 
 export enum UserComponentMode {
     registerClient = 'registerClient',
@@ -34,6 +35,7 @@ export class UserComponent {
     @Input() employeeId: number = getEmployeeId() || 0;
 
     private userService = inject(UserService);
+    private callbackService = inject(UserCallbackService);
     private fb = inject(FormBuilder);
     private router = inject(Router);
     private route = inject(ActivatedRoute);
@@ -42,19 +44,19 @@ export class UserComponent {
     currentError = "Error desconocido.";
     private addressId = 0;
 
-    private passwordsMatch(group: AbstractControl) {
-        const password = group.get('password')?.value;
-        const confirm = group.get('password2')?.value;
-
-        return password === confirm ? null : { passwordMismatch: true };
-    }
+    //private passwordsMatch(group: AbstractControl) {
+    //    if (this?.mode === UserComponentMode.registerEmployee) return true;
+    //    const password = group.get('password')?.value;
+    //    const confirm = group.get('password2')?.value;
+    //    return password === confirm ? null : { passwordMismatch: true };
+    //}
 
     userForm: FormGroup = this.fb.group({
         email: ['', [Validators.required, Validators.email]],
-        name: ['', Validators.required],
-        surnames: ['', Validators.required],
-        phone: ['', Validators.required],
-        password: ['', Validators.required, Validators.minLength(8)],
+        name: ['', [Validators.required]],
+        surnames: ['', [Validators.required]],
+        phone: ['', [Validators.required]],
+        password: ['', [Validators.required, Validators.minLength(8)]],
         nameAddress: ['', [Validators.required, Validators.maxLength(64)]],
         street: ['', [Validators.required, Validators.maxLength(128)]],
         number: ['', [Validators.required, Validators.maxLength(10)]],
@@ -65,16 +67,16 @@ export class UserComponent {
         floor: ['', [Validators.maxLength(10)]],
         door: ['', [Validators.maxLength(10)]],
         staircase: ['', [Validators.maxLength(10)]],
-        password2: ['', {
-            validators: [Validators.required],
-            updateOn: 'blur'
-        }],
-    }, {
-        validators: this.mode == UserComponentMode.registerClient ? this.passwordsMatch : undefined
+        //password2: ['', {
+        //    validators: [Validators.required],
+        //    updateOn: 'blur'
+        //}],
+        //}, {
+        //    validators: this.mode == UserComponentMode.registerClient ? this.passwordsMatch : undefined
     });
 
     showPassword = false;
-    showPassword2 = false;
+    //showPassword2 = false;
 
     ngOnInit() {
         this.mode = this.route.snapshot.data['mode'];
@@ -82,11 +84,13 @@ export class UserComponent {
             this.loadData();
             this.userForm.get('password')?.clearValidators();
         }
-
+        if (this.mode === UserComponentMode.registerEmployee) {
+            //this.userForm.get('password2')?.clearValidators();
+        }
         if (this.mode === UserComponentMode.onlyToSend) {
             this.userForm.get('telefono')?.clearValidators();
             this.userForm.get('password')?.clearValidators();
-            this.userForm.get('password2')?.clearValidators();
+            //this.userForm.get('password2')?.clearValidators();
         }
 
         this.userForm.updateValueAndValidity();
@@ -115,11 +119,10 @@ export class UserComponent {
                         staircase: data.addresses[0]?.staircase
                     });
                     this.cd.detectChanges();
-                    console.log("Formulario tras patch:", this.userForm.value);
                 },
                 error: () => console.log("Error getting user data")
             });
-        } else {
+        } else if (this.mode === UserComponentMode.editEmployee) {
             this.userService.getEmployeeData(this.employeeId).subscribe({
                 next: (response) => {
                     const data = response.data;
@@ -141,7 +144,6 @@ export class UserComponent {
                         staircase: data.addresses[0]?.staircase
                     });
                     this.cd.detectChanges();
-                    console.log("Formulario tras patch:", this.userForm.value);
                 },
                 error: () => console.log("Error getting user data")
             });
@@ -154,7 +156,7 @@ export class UserComponent {
     get surnames() { return this.userForm.get('surnames')!; }
     get phone() { return this.userForm.get('phone')!; }
     get password() { return this.userForm.get('password')!; }
-    get password2() { return this.userForm.get('password2')!; }
+    //get password2() { return this.userForm.get('password2')!; }
     get nameAddress() { return this.userForm.get("nameAddress")!; }
     get street() { return this.userForm.get("street")!; }
     get number() { return this.userForm.get("number")!; }
@@ -168,9 +170,10 @@ export class UserComponent {
 
     togglePassword() {
         this.showPassword = !this.showPassword;
-    } togglePassword2() {
-        this.showPassword2 = !this.showPassword2;
     }
+    //togglePassword2() {
+    //    this.showPassword2 = !this.showPassword2;
+    //}
 
     onSubmit() {
         if (this.userForm.invalid) {
@@ -196,6 +199,11 @@ export class UserComponent {
             phone: this.userForm.value.phone || undefined,
             password: this.userForm.value.password || undefined
         };
+
+        if (this.callbackService.onSuccess) {
+            return this.callbackService.onSuccess(client, address);
+        }
+
         if (this.mode == UserComponentMode.registerClient) {
             this.userService.createUserAndAddress(client,
                 this.userForm.value.nameAddress,
@@ -237,12 +245,14 @@ export class UserComponent {
     }
 
     onCancel() {
+        if (this.callbackService.onCancel) {
+            return this.callbackService.onCancel();
+        }
         switch (this.mode) {
             case UserComponentMode.registerClient: this.router.navigate(['/login']); break;
-            case UserComponentMode.editClient: this.router.navigate(['/product']); break;
-            case UserComponentMode.editEmployee: this.router.navigate(['/product']); break;
             case UserComponentMode.registerEmployee: this.router.navigate(['/employees']); break;
-            case UserComponentMode.onlyToSend: this.router.navigate(['/product']); break;
+            default:
+                this.router.navigate(['/product']); break;
         }
     }
 }

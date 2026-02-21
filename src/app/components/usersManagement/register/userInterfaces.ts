@@ -23,6 +23,10 @@ export interface PostAddressData {
     staircase?: string;
 }
 
+export interface PostRoleData {
+    id: number
+}
+
 export interface GetAddressData {
     id: number;
     name?: string;

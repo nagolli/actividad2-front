@@ -1,4 +1,4 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { EmployeeItemComponent } from '../item/employeeItem';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -8,6 +8,9 @@ import { EmployeeService } from '../employee.service';
 import { DialogModule } from 'primeng/dialog';
 import { SelectModule } from 'primeng/select';
 import { Permission, PermissionLevel, hasEmployeePermission } from '../../../../signals/loginData';
+import { Router } from '@angular/router';
+import { UserComponentMode } from '../../register/userForm';
+import { UserCallbackService } from '../../register/userCallback.service';
 
 @Component({
     selector: 'app-employees-list',
@@ -22,8 +25,9 @@ export class EmployeeListComponent implements OnInit {
 
     searchTerm = '';
     employees = signal<Employee[]>([]);
+    private readonly router = inject(Router);
 
-    constructor(private employeeService: EmployeeService) { }
+    constructor(private employeeService: EmployeeService, private callback: UserCallbackService) { }
 
     hasPermission() {
         return hasEmployeePermission(Permission.empleados, PermissionLevel.edit)
@@ -51,34 +55,33 @@ export class EmployeeListComponent implements OnInit {
     }
 
     onNew() {
-        let newItem = this.employees().find(e => e.id == 0)
-        if (newItem) {
-            //Reiniciar el que se esta creando nuevo
-            this.onCancel(newItem);
-            this.onNew();
-        } else {
-            //Nuevo campo
-            this.employees().unshift(new Employee())
-            this.employees.set([...this.employees()])
-            setTimeout(() => {
-                //Asegurar que se ve el nuevo campo
-                const el = document.getElementById('newItem');
-                if (el) {
-                    el.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                }
-            }, 100)
-        }
+        //Establecer función de callback:
+        this.callback.onSuccess = (user, address, roles) => {
+            //En el ok volver a esta vista
+            console.log(user, address, roles);
+            this.router.navigate(['/employees'])
+        };
+        this.callback.onCancel = () => {
+            //En el cancel volver a esta vista
+            this.router.navigate(['/employees'])
+        };
+
+        //Navegar a edicion de usuario, modo admin
+        this.router.navigate(['/user', UserComponentMode.registerEmployee])
+
     }
 
     editingEmployee = signal<number | null>(null);
 
     onEdit(employee: Employee) {
+        //Navegar a edicion de usuario, modo admin
         this.editingEmployee.set(employee.id);
+        //En el ok volver a esta vista
+
     }
 
 
     onDelete(employee: Employee) {
-        console.log("Dando de baja");
         this.employeeService.setEnabled(employee.id, false,
             () => setTimeout(() => {
                 this.loadEmployees();
@@ -89,7 +92,6 @@ export class EmployeeListComponent implements OnInit {
     }
 
     onRestore(employee: Employee) {
-        console.log("Dando de alta");
         this.employeeService.setEnabled(employee.id, true,
             () => setTimeout(() => {
                 this.loadEmployees();
