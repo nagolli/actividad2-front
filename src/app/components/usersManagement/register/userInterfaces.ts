@@ -24,7 +24,7 @@ export interface PostAddressData {
 }
 
 export interface PostRoleData {
-    id: number
+    ids: number[]
 }
 
 export interface GetAddressData {

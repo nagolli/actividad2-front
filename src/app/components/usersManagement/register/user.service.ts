@@ -71,7 +71,6 @@ export class UserService {
         return this.http.post(`${environment.apiUrl}/client`, body).pipe(
             map(() => true),
             catchError(error => {
-                debugger
                 console.error('Error al crear usuario:', error);
                 if (error.status === 422 && error.error?.errors) {
                     const errores = Object.values(error.error.errors)

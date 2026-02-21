@@ -32,10 +32,11 @@ export enum UserComponentMode {
 export class UserComponent {
 
     @Input() mode: UserComponentMode = UserComponentMode.registerClient;
-    @Input() employeeId: number = getEmployeeId() || 0;
+    private callbackService = inject(UserCallbackService);
+    @Input() currentEmployeeId: number = getEmployeeId() || 0;
+    private employeeId = this.callbackService.employeeId ?? this.currentEmployeeId;
 
     private userService = inject(UserService);
-    private callbackService = inject(UserCallbackService);
     private fb = inject(FormBuilder);
     private router = inject(Router);
     private route = inject(ActivatedRoute);
@@ -201,7 +202,7 @@ export class UserComponent {
         };
 
         if (this.callbackService.onSuccess) {
-            return this.callbackService.onSuccess(client, address);
+            return this.callbackService.onSuccess(client, this.userForm.value.nameAddress, address, this.addressId);
         }
 
         if (this.mode == UserComponentMode.registerClient) {
@@ -228,9 +229,9 @@ export class UserComponent {
                     }
                 });
         } else if (this.mode == UserComponentMode.editClient || this.mode == UserComponentMode.editEmployee) {
-            const updateAddress$ = this.userService.updateAddress(address, this.addressId);
-            const updateUser$ = this.mode == UserComponentMode.editClient ? this.userService.updateUser(client, getClientId() || 0) : this.userService.updateEmployee(client, [], this.employeeId);
-            forkJoin([updateAddress$, updateUser$]).subscribe({
+            const updateAddress = this.userService.updateAddress(address, this.addressId);
+            const updateUser = this.mode == UserComponentMode.editClient ? this.userService.updateUser(client, getClientId() || 0) : this.userService.updateEmployee(client, [], this.employeeId);
+            forkJoin([updateAddress, updateUser]).subscribe({
                 next: ([addressResponse, userResponse]) => {
                     this.router.navigate(['/product']);
                 },

@@ -3,13 +3,14 @@ import { PostAddressData, PostRoleData, PostUserData } from "./userInterfaces";
 
 @Injectable({ providedIn: 'root' })
 export class UserCallbackService {
-    private _onSuccess?: (user: PostUserData, address: PostAddressData, roles?: PostRoleData) => void;
+    private _onSuccess?: (user: PostUserData, addressName: string, address: PostAddressData, addressId?: number, roles?: PostRoleData) => void;
     private _onCancel?: () => void;
+    public employeeId?: number | undefined;
 
-    set onSuccess(fn: (user: PostUserData, address: PostAddressData, roles?: PostRoleData) => void) {
-        this._onSuccess = (user: PostUserData, address: PostAddressData, roles?: PostRoleData) => {
+    set onSuccess(fn: (user: PostUserData, addressName: string, address: PostAddressData, addressId?: number, roles?: PostRoleData) => void) {
+        this._onSuccess = (user: PostUserData, addressName: string, address: PostAddressData, addressId?: number, roles?: PostRoleData) => {
             try {
-                fn(user, address, roles);
+                fn(user, addressName, address, addressId, roles);
             } catch (ex) {
                 console.log(ex)
             } finally {
@@ -18,7 +19,7 @@ export class UserCallbackService {
         };
     }
 
-    get onSuccess(): ((user: PostUserData, address: PostAddressData, roles?: PostRoleData) => void) | undefined {
+    get onSuccess(): ((user: PostUserData, addressName: string, address: PostAddressData, addressId?: number, roles?: PostRoleData) => void) | undefined {
         return this._onSuccess;
     }
 
@@ -41,5 +42,6 @@ export class UserCallbackService {
     clear() {
         this._onSuccess = undefined;
         this._onCancel = undefined;
+        this.employeeId = undefined;
     }
 }

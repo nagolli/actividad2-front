@@ -11,6 +11,8 @@ import { Permission, PermissionLevel, hasEmployeePermission } from '../../../../
 import { Router } from '@angular/router';
 import { UserComponentMode } from '../../register/userForm';
 import { UserCallbackService } from '../../register/userCallback.service';
+import { UserService } from '../../register/user.service';
+import { forkJoin } from 'rxjs';
 
 @Component({
     selector: 'app-employees-list',
@@ -26,8 +28,9 @@ export class EmployeeListComponent implements OnInit {
     searchTerm = '';
     employees = signal<Employee[]>([]);
     private readonly router = inject(Router);
-
-    constructor(private employeeService: EmployeeService, private callback: UserCallbackService) { }
+    private userService = inject(UserService);
+    private employeeService = inject(EmployeeService);
+    private callback = inject(UserCallbackService);
 
     hasPermission() {
         return hasEmployeePermission(Permission.empleados, PermissionLevel.edit)
@@ -56,10 +59,19 @@ export class EmployeeListComponent implements OnInit {
 
     onNew() {
         //Establecer función de callback:
-        this.callback.onSuccess = (user, address, roles) => {
-            //En el ok volver a esta vista
-            console.log(user, address, roles);
-            this.router.navigate(['/employees'])
+        this.callback.onSuccess = (user, addressName, address, addressId, roles) => {
+            this.userService.createEmployeeAndAddress(user,
+                addressName,
+                address, roles?.ids || []).subscribe({
+                    next: (response: boolean | string) => {
+                        if (response === true) {
+                            this.router.navigate(['/employees'])
+                        }
+                    },
+                    error: (err: any) => {
+                        this.router.navigate(['/employees'])
+                    }
+                });
         };
         this.callback.onCancel = () => {
             //En el cancel volver a esta vista
@@ -71,13 +83,29 @@ export class EmployeeListComponent implements OnInit {
 
     }
 
-    editingEmployee = signal<number | null>(null);
+    //editingEmployee = signal<number | null>(null);
 
     onEdit(employee: Employee) {
-        //Navegar a edicion de usuario, modo admin
-        this.editingEmployee.set(employee.id);
-        //En el ok volver a esta vista
-
+        this.callback.onSuccess = (user, addressName, address, addressId, roles) => {
+            console.log(user, addressName, address, addressId, roles)
+            //En el ok volver a esta vista
+            const updateAddress = this.userService.updateAddress(address, addressId || 0)
+            const updateEmployee = this.userService.updateEmployee(user, roles?.ids || [], employee.id);
+            forkJoin([updateAddress, updateEmployee]).subscribe({
+                next: ([addressResponse, userResponse]) => {
+                    this.router.navigate(['/employees'])
+                },
+                error: (err) => {
+                    this.router.navigate(['/employees'])
+                }
+            });
+        };
+        this.callback.onCancel = () => {
+            //En el cancel volver a esta vista
+            this.router.navigate(['/employees'])
+        };
+        this.callback.employeeId = employee.id;
+        this.router.navigate(['/user', UserComponentMode.editEmployee])
     }
 
 
@@ -101,13 +129,13 @@ export class EmployeeListComponent implements OnInit {
             }).subscribe();
     }
 
-    onCancel(employee: Employee | PostEmployee) {
-        if (employee.id == 0) {
-            this.employees.set([...this.employees().filter(e => e.id > 0)])
-        } else {
-            this.editingEmployee.set(null);
-        }
-    }
+    //onCancel(employee: Employee | PostEmployee) {
+    //    if (employee.id == 0) {
+    //        this.employees.set([...this.employees().filter(e => e.id > 0)])
+    //    } else {
+    //        this.editingEmployee.set(null);
+    //    }
+    //}
 
     onSave(values: any) {
         const employee = new PostEmployee();
@@ -115,14 +143,14 @@ export class EmployeeListComponent implements OnInit {
         employee.name = values.name;
         if (employee.id == 0) {
             this.employeeService.create(employee, () => setTimeout(() => {
-                this.onCancel(employee);
+                //this.onCancel(employee);
                 this.loadEmployees()
             }, 100), (ev) => {
                 console.log("Error creando empleado", ev)
             }).subscribe();
         } else {
             this.employeeService.update(employee.id, employee, () => setTimeout(() => {
-                this.onCancel(employee);
+                //this.onCancel(employee);
                 this.loadEmployees()
             }, 100), (ev) => {
                 console.log("Error actualizando empleado", ev)
