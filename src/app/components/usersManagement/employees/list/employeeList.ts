@@ -78,11 +78,25 @@ export class EmployeeListComponent implements OnInit {
 
 
     onDelete(employee: Employee) {
-
+        console.log("Dando de baja");
+        this.employeeService.setEnabled(employee.id, false,
+            () => setTimeout(() => {
+                this.loadEmployees();
+            }, 100),
+            (ev) => {
+                console.log("Error actualizando empleado", ev)
+            }).subscribe();
     }
 
     onRestore(employee: Employee) {
-
+        console.log("Dando de alta");
+        this.employeeService.setEnabled(employee.id, true,
+            () => setTimeout(() => {
+                this.loadEmployees();
+            }, 100),
+            (ev) => {
+                console.log("Error actualizando empleado", ev)
+            }).subscribe();
     }
 
     onCancel(employee: Employee | PostEmployee) {

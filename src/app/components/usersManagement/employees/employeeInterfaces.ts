@@ -28,6 +28,7 @@ export class PostEmployee {
     public surname: string = "";
     public phone: string = "";
     public password: string = "";
+    public isInactive: boolean = false;
     public addresses: PostAddressData[] = [];
     public roles: { id: number }[] = []
 
