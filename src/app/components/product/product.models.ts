@@ -22,3 +22,7 @@ export interface ProductFilters {
   min: number;
   max: number;
 }
+
+export interface SearchFilter {
+  query: string;
+}

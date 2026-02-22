@@ -1,9 +1,4 @@
 <div class="product-container">
-  @if (isLoading()) {
-    <div class="spinner-overlay">
-      <p-progressSpinner ariaLabel="Cargando productos"></p-progressSpinner>
-    </div>
-  }
   <div class="product-toolbar">
     <form class="filters" [formGroup]="filtersForm" role="search" aria-label="Filtros de productos">
       <div class="filter-field">

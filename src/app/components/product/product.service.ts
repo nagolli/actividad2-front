@@ -1,9 +1,9 @@
   
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
-import { inject, Injectable } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
 import { Observable } from 'rxjs';
-import { PriceRange, Product, ProductFilters } from './product.models';
+import { PriceRange, Product, ProductFilters, SearchFilter } from './product.models';
 
 @Injectable({
   providedIn: 'root'
@@ -11,9 +11,36 @@ import { PriceRange, Product, ProductFilters } from './product.models';
 export class ProductService {
 
   private readonly http = inject(HttpClient);
+  private readonly lastSearchResults = signal<Product[] | null>(null);
+  private readonly reloadAllCounter = signal(0);
+  readonly searchResults = this.lastSearchResults.asReadonly();
+  readonly reloadAll = this.reloadAllCounter.asReadonly();
+
+  setSearchResults(results: Product[]): void {
+    this.lastSearchResults.set(results);
+  }
+
+  consumeSearchResults(): Product[] | null {
+    const results = this.lastSearchResults();
+    this.lastSearchResults.set(null);
+    return results;
+  }
+
+  clearSearchResults(): void {
+    this.lastSearchResults.set(null);
+  }
+
+  requestReloadAll(): void {
+    this.lastSearchResults.set(null);
+    this.reloadAllCounter.update(value => value + 1);
+  }
 
   filter(filters: ProductFilters): Observable<Product[]> {
     return this.http.post<Product[]>(`${environment.apiUrl}/product/filter`, filters);
+  }
+
+  search(search: SearchFilter): Observable<Product[]> {
+    return this.http.post<Product[]>(`${environment.apiUrl}/product/search`, search);
   }
 
   getProducts(): Observable<Product[]> {

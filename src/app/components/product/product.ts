@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, effect, inject, OnInit, signal } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { ProductService } from './product.service';
 import { PriceRange, Product, ProductFilters } from './product.models';
@@ -46,7 +46,21 @@ export class ProductComponent implements OnInit {
   protected readonly supplierOptions = signal<SelectOption[]>([]);
   protected readonly priceRange = signal<PriceRange>({ min: 0, max: 500 });
   protected readonly priceRangeLoaded = signal<boolean>(false);
-  protected readonly isLoading = signal<boolean>(false);
+  private readonly searchEffect = effect(() => {
+    const results = this.productService.searchResults();
+    if (results) {
+      this.products.set(results);
+      this.productService.clearSearchResults();
+    }
+  });
+  private readonly reloadEffect = effect(() => {
+    const reloadCounter = this.productService.reloadAll();
+    if (reloadCounter > 0) {
+      this.productService.getProducts().subscribe(products => {
+        this.products.set(products);
+      });
+    }
+  });
 
   protected readonly filtersForm = new FormGroup({
     name: new FormControl('', { nonNullable: true }),
@@ -72,6 +86,12 @@ export class ProductComponent implements OnInit {
   }
 
   loadProducts() {
+    const searchResults = this.productService.consumeSearchResults();
+    if (searchResults) {
+      this.products.set(searchResults);
+      return;
+    }
+
     this.productService.getProducts().subscribe(products => {
       this.products.set(products);
     });
@@ -103,10 +123,8 @@ export class ProductComponent implements OnInit {
       max: formValue.priceRange[1]
     };
 
-    this.isLoading.set(true);
     this.productService.filter(filters).subscribe(products => {
       this.products.set(products);
-      this.isLoading.set(false);
     });
   }
 

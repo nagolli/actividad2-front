@@ -9,13 +9,13 @@
                 <i class="fa-solid fa-hat-wizard"></i>
                 <span class="icon-label">PRODUCTOS</span>
             </a>
-            <a (click)="go('/')" class="icon-link-container">
+            <a (click)="go('/book')" class="icon-link-container">
                 <i class="fa-solid fa-chess"></i>
                 <span class="icon-label">RESERVAS</span>
             </a>
             <div class="search-container">
-                <input pInputText type="text" placeholder="Buscar" />
-                <button pButton type="button" (click)="onSearch()">
+                <input pInputText type="text" placeholder="Buscar" #searchInput (keyup.enter)="onSearch(searchInput.value)" />
+                <button pButton type="button" (click)="onSearch(searchInput.value)">
                     <i class="fa-solid fa-magnifying-glass"></i>
                 </button>
             </div>
