@@ -1,3 +1,4 @@
+import { Role } from "../roles/roleInterfaces";
 
 export interface PostUserData {
     email: string;
@@ -58,7 +59,7 @@ export interface GetEmployeeResponse {
         surname: string;
         phone: string;
         addresses: GetAddressData[],
-        roles: { name: string, id: number }[]
+        roles: Role[],
     }
 }
 

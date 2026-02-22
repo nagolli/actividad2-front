@@ -159,3 +159,7 @@ form small.p-error {
     display: flex;
     justify-content: space-between;
 }
+
+p-select {
+    width: 100%;
+}
