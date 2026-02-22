@@ -20,6 +20,7 @@
     display: flex;
     align-items: center;
     gap: 0.75rem;
+    cursor: pointer;
 }
 
 .header-icons {
@@ -54,6 +55,10 @@
 }
 
 .icon-link-container:hover {
+    color: #E7EFC7;
+}
+
+.icon-link-container.is-active {
     color: #E7EFC7;
 }
 

@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { InputText } from 'primeng/inputtext';
 import { MenuComponent } from '../menu/menu';
-import { Router } from '@angular/router';
+import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { ProductService } from '../../components/product/product.service';
 
 @Component({
@@ -9,7 +9,7 @@ import { ProductService } from '../../components/product/product.service';
   templateUrl: './header.html',
   styleUrls: ['./header.css', '../../shared/styles/searchContainer.css'],
   standalone: true,
-  imports: [InputText, MenuComponent]
+  imports: [InputText, MenuComponent, RouterLink, RouterLinkActive]
 })
 export class HeaderComponent {
   private readonly router = inject(Router);
@@ -17,10 +17,11 @@ export class HeaderComponent {
 
 
   go(route: string) {    
-    if (route === '/product') {
-      this.productService.requestReloadAll();
-    }
     this.router.navigate([route]);
+  }
+
+  onProductsClick() {
+    this.productService.requestReloadAll();
   }
 
   onSearch(query: string) {

@@ -1,11 +1,11 @@
 <header class="app-header">
     <div class="header-content">
-        <div class="brand">
+        <div class="brand" (click)="go('/')" role="button" tabindex="0">
             <img class="brand-icon" src="assets/LudoPlanet.svg" alt="LudoPlanet">
             <h1>LudoPlanet</h1>
         </div>
         <div class="header-icons">
-            <a (click)="go('/product')" class="icon-link-container">
+            <a class="icon-link-container" routerLink="/product" routerLinkActive="is-active" (click)="onProductsClick()">
                 <i class="fa-solid fa-hat-wizard"></i>
                 <span class="icon-label">PRODUCTOS</span>
             </a>

@@ -11,6 +11,7 @@ import { CategoryComponent } from './components/category/category';
 import { ProductDetailComponent } from './components/product-detail/product-detail';
 import { CartComponent } from './components/cart/cart';
 import { EmployeeListComponent } from './components/usersManagement/employees/list/employeeList';
+import { NotFoundComponent } from './components/not-found/not-found';
 
 export const routes: Routes = [
   {
@@ -87,5 +88,9 @@ export const routes: Routes = [
     component: EmployeeListComponent,
     canActivate: [PermissionGuard],
     data: { permission: Permission.empleados, level: PermissionLevel.read }
+  },
+  {
+    path: '**',
+    component: NotFoundComponent
   }
 ];

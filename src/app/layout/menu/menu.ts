@@ -83,12 +83,10 @@ export class MenuComponent {
   }
 
   myReservations() {
-    console.log('Ir a mis reservas, Bloque 4');
-    // Navegar
+    this.router.navigate(['/book']);
   }
 
   managePromotions() {
-    console.log('Ir a gestionar promociones, Bloque 5');
-    // Navegar
+    this.router.navigate(['/promotion']);
   }
 }

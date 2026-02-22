@@ -1,0 +1,33 @@
+.not-found {
+  min-height: calc(100vh - 120px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.not-found-card {
+  background: #F7F6EB;
+  border: 2px dashed #AEC8A4;
+  color: #3B3B1A;
+  padding: 2.5rem 3rem;
+  border-radius: 1.5rem;
+  text-align: center;
+  box-shadow: 0 12px 30px rgba(59, 59, 26, 0.15);
+}
+
+.not-found-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.not-found-card h2 {
+  margin: 0 0 0.5rem;
+  font-size: 1.75rem;
+  font-family: 'Titan One', cursive;
+}
+
+.not-found-card p {
+  margin: 0;
+  font-size: 1rem;
+}
