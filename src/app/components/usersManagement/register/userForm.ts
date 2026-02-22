@@ -1,14 +1,17 @@
-import { ChangeDetectorRef, Component, Input, inject } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, AbstractControl } from '@angular/forms';
+import { ChangeDetectorRef, Component, Input, computed, inject, signal } from '@angular/core';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, AbstractControl, FormArray, FormControl } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
 import { ActivatedRoute, Router } from '@angular/router';
-import { PostAddressData, PostUserData } from './userInterfaces'
+import { PostAddressData, PostRoleData, PostUserData } from './userInterfaces'
 import { UserService } from './user.service'
-import { getClientId, getEmployeeId } from '../../../signals/loginData';
+import { getClientId, getEmployeeId, hasEmployeePermission, Permission, PermissionLevel } from '../../../signals/loginData';
 import { forkJoin } from 'rxjs';
 import { UserCallbackService } from './userCallback.service';
+import { Role } from '../roles/roleInterfaces';
+import { RoleService } from '../roles/role.service';
+import { SelectModule } from 'primeng/select';
 
 export enum UserComponentMode {
     registerClient = 'registerClient',
@@ -25,6 +28,7 @@ export enum UserComponentMode {
     imports: [
         CommonModule,
         ReactiveFormsModule,
+        SelectModule,
         InputTextModule,
         ButtonModule
     ]
@@ -32,17 +36,22 @@ export enum UserComponentMode {
 export class UserComponent {
 
     @Input() mode: UserComponentMode = UserComponentMode.registerClient;
-    @Input() employeeId: number = getEmployeeId() || 0;
+    private callbackService = inject(UserCallbackService);
+    @Input() currentEmployeeId: number = getEmployeeId() || 0;
+    private employeeId = this.callbackService.employeeId ?? this.currentEmployeeId;
 
     private userService = inject(UserService);
-    private callbackService = inject(UserCallbackService);
     private fb = inject(FormBuilder);
     private router = inject(Router);
     private route = inject(ActivatedRoute);
     private cd = inject(ChangeDetectorRef);
+    private roleService = inject(RoleService);
     formError = false;
     currentError = "Error desconocido.";
     private addressId = 0;
+
+    allRoles = signal<Role[]>([]);
+    selectedRoles = signal<Role[]>([]);
 
     //private passwordsMatch(group: AbstractControl) {
     //    if (this?.mode === UserComponentMode.registerEmployee) return true;
@@ -50,6 +59,14 @@ export class UserComponent {
     //    const confirm = group.get('password2')?.value;
     //    return password === confirm ? null : { passwordMismatch: true };
     //}
+
+    private minOneRole(control: AbstractControl) {
+        if (!this.rolesPermission) return null;
+        const arr = control as FormArray;
+        const selected = arr.value.filter((v: number | null) => v !== null);
+        return selected.length > 0 ? null : { minOneRole: true };
+    }
+
 
     userForm: FormGroup = this.fb.group({
         email: ['', [Validators.required, Validators.email]],
@@ -67,6 +84,7 @@ export class UserComponent {
         floor: ['', [Validators.maxLength(10)]],
         door: ['', [Validators.maxLength(10)]],
         staircase: ['', [Validators.maxLength(10)]],
+        roles: this.fb.array([], [this.minOneRole.bind(this)]),
         //password2: ['', {
         //    validators: [Validators.required],
         //    updateOn: 'blur'
@@ -127,6 +145,14 @@ export class UserComponent {
                 next: (response) => {
                     const data = response.data;
                     this.addressId = data.addresses[0]?.id;
+                    this.selectedRoles.set(data.roles);
+                    if (data.roles.length) {
+                        this.roles.clear();
+                        data.roles.forEach((role: Role) => {
+                            this.roles.push(new FormControl(role.id));
+                        });
+                        this.addEmptyRoleRow();
+                    }
                     this.userForm.patchValue({
                         email: data.email,
                         name: data.name,
@@ -147,6 +173,17 @@ export class UserComponent {
                 },
                 error: () => console.log("Error getting user data")
             });
+            if (this.rolesPermission) {
+                this.roleService.getList(
+                    data => {
+                        this.allRoles.set(data);
+                    },
+                    err => {
+                        console.error('Error cargando roles', err)
+                    }
+                ).subscribe();
+                this.addEmptyRoleRow();
+            }
         }
     }
 
@@ -167,6 +204,8 @@ export class UserComponent {
     get floor() { return this.userForm.get("floor")!; }
     get door() { return this.userForm.get("door")!; }
     get staircase() { return this.userForm.get("staircase")!; }
+
+    get roles(): FormArray { return this.userForm.get('roles') as FormArray; }
 
     togglePassword() {
         this.showPassword = !this.showPassword;
@@ -200,8 +239,12 @@ export class UserComponent {
             password: this.userForm.value.password || undefined
         };
 
+        const roles: PostRoleData = {
+            ids: this.roles.value.filter((v: number | null) => v !== null)
+        }
+
         if (this.callbackService.onSuccess) {
-            return this.callbackService.onSuccess(client, address);
+            return this.callbackService.onSuccess(client, this.userForm.value.nameAddress, address, this.addressId, roles);
         }
 
         if (this.mode == UserComponentMode.registerClient) {
@@ -227,10 +270,10 @@ export class UserComponent {
                         this.userForm.reset();
                     }
                 });
-        } else if (this.mode == UserComponentMode.editClient || this.mode == UserComponentMode.editEmployee) {
-            const updateAddress$ = this.userService.updateAddress(address, this.addressId);
-            const updateUser$ = this.mode == UserComponentMode.editClient ? this.userService.updateUser(client, getClientId() || 0) : this.userService.updateEmployee(client, [], this.employeeId);
-            forkJoin([updateAddress$, updateUser$]).subscribe({
+        } else if (this.mode == UserComponentMode.editClient || (this.mode == UserComponentMode.editEmployee && !this.rolesPermission)) {
+            const updateAddress = this.userService.updateAddress(address, this.addressId);
+            const updateUser = this.mode == UserComponentMode.editClient ? this.userService.updateUser(client, getClientId() || 0) : this.userService.updateEmployee(client, [], this.employeeId);
+            forkJoin([updateAddress, updateUser]).subscribe({
                 next: ([addressResponse, userResponse]) => {
                     this.router.navigate(['/product']);
                 },
@@ -244,6 +287,10 @@ export class UserComponent {
 
     }
 
+    get rolesPermission() {
+        return hasEmployeePermission(Permission.empleados, PermissionLevel.edit) && this.currentEmployeeId != this.employeeId
+    }
+
     onCancel() {
         if (this.callbackService.onCancel) {
             return this.callbackService.onCancel();
@@ -255,4 +302,32 @@ export class UserComponent {
                 this.router.navigate(['/product']); break;
         }
     }
+
+    addEmptyRoleRow() {
+        this.roles.push(new FormControl(null));
+    }
+
+    onRoleChange(index: number) {
+        const values = this.roles.value.filter((v: any) => v !== null);
+
+        // Actualizamos selectedRoles
+        const selected = this.allRoles().filter(r => values.includes(r.id));
+        this.selectedRoles.set(selected);
+
+        // Si el usuario acaba de rellenar la última fila → añadimos otra vacía
+        if (index === this.roles.length - 1 && this.roles.at(index).value !== null) {
+            this.addEmptyRoleRow();
+        }
+    }
+
+    remainingRoles(index: number): Role[] {
+        const selectedIds = new Set(
+            this.roles.value
+                .map((v: number | null, i: number) => (i === index ? null : v))
+                .filter((v: any) => v !== null)
+        );
+
+        return this.allRoles().filter(r => !selectedIds.has(r.id));
+    }
+
 }

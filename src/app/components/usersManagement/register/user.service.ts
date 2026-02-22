@@ -71,7 +71,6 @@ export class UserService {
         return this.http.post(`${environment.apiUrl}/client`, body).pipe(
             map(() => true),
             catchError(error => {
-                debugger
                 console.error('Error al crear usuario:', error);
                 if (error.status === 422 && error.error?.errors) {
                     const errores = Object.values(error.error.errors)
@@ -146,7 +145,7 @@ export class UserService {
     ): Observable<boolean> {
         const body = {
             ...employee,
-            roles: roles.map(r => { return { id: r } })
+            roles: roles.length > 0 ? roles.map(r => { return { roleId: r } }) : undefined
         };
         return this.http.patch(`${environment.apiUrl}/employee/${id}`, body).pipe(
             map(() => true),
@@ -184,7 +183,7 @@ export class UserService {
         clientId: number,
         next?: (data: GetEmployeeResponse) => void,
         error?: (err: any) => void
-    ): Observable<GetClientResponse> {
+    ): Observable<GetEmployeeResponse> {
         return this.http.get<GetEmployeeResponse>(`${environment.apiUrl}/employee/${clientId}`).pipe(
             tap({
                 next: data => next?.(data),

@@ -179,6 +179,26 @@
                 <label for="staircase">Escalera</label>
                 <input id="staircase" pInputText formControlName="staircase" />
             </div>
+
+            <span *ngIf="rolesPermission" class="user-title">
+                Roles
+            </span>
+            <div *ngIf="rolesPermission" formArrayName="roles" class="fullRow grid-2">
+                <div *ngFor="let ctrl of roles.controls; let i = index">
+                    <div class="field">
+                        <p-select [options]="[{ id: null, name: '— Ninguno —' }, ...remainingRoles(i)]"
+                            optionLabel="name" optionValue="id" [formControlName]="i" placeholder="Selecciona un rol"
+                            [filter]="true" appendTo="body" (onChange)="onRoleChange(i)">
+                        </p-select>
+                    </div>
+
+                    <div *ngIf="roles.invalid && roles.touched && i==0" class="error">
+                        Debes asignar al menos un rol.
+                    </div>
+                </div>
+            </div>
+
+
             <div class="button-row fullRow">
                 <button pButton type="submit" label="Validar" class="btn-edit" [disabled]="userForm.invalid"></button>
 
