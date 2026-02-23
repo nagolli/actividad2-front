@@ -79,7 +79,7 @@ export class MenuComponent {
 
   myOrders() {
     console.log('Ir a mis pedidos, Bloque 3');
-    // Navegar
+    this.router.navigate(['/myorders']);
   }
 
   myReservations() {

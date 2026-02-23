@@ -9,11 +9,18 @@ import { UserComponent, UserComponentMode } from './components/usersManagement/r
 import { SupplierComponent } from './components/supplier/supplier';
 import { CategoryComponent } from './components/category/category';
 import { ProductDetailComponent } from './components/product-detail/product-detail';
+import { VideoComponent } from './components/video-component/video-component';
 import { CartComponent } from './components/cart/cart';
 import { EmployeeListComponent } from './components/usersManagement/employees/list/employeeList';
 import { NotFoundComponent } from './components/not-found/not-found';
+import { MyOrders } from './components/myorders/myorders';
 
 export const routes: Routes = [
+  { path: '', component: VideoComponent },
+  {
+    path: 'myorders',
+    component: MyOrders
+  },
   {
     path: 'cart',
     component: CartComponent

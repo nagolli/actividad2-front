@@ -1,9 +1,12 @@
 import { Injectable, signal, computed } from '@angular/core';
 import { CartItem } from './cart-item.models';
+import { PostAddressData, PostUserData } from '../usersManagement/register/userInterfaces'
 
 @Injectable({ providedIn: 'root' })
 export class CartService {
-
+  hayDatosEnvio = signal(false);
+  public user:PostUserData | null = null ;
+  public address:PostAddressData | null = null;
   private _items = signal<CartItem[]>([]);
 
   items = computed(() => this._items());

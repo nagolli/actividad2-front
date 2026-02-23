@@ -1,0 +1,62 @@
+<div class="orders-container">
+
+  <h2>Mis pedidos</h2>
+
+  <!-- Loading -->
+  @if (loading()) {
+    <p>Cargando pedidos...</p>
+  }
+
+  <!-- Error -->
+  @if (error()) {
+    <p class="error">{{ error() }}</p>
+  }
+
+  <!-- Sin pedidos -->
+  @if (!loading() && orders().length === 0) {
+    <p>No tienes pedidos todavía.</p>
+  }
+
+  <!-- Listado de pedidos -->
+  @for (order of orders(); track order.id) {
+    <div class="order-card">
+
+      <div class="order-header">
+        <strong>Pedido #{{ order.id }}</strong>
+        <span>{{ order.date | date:'short' }}</span>
+        <span class="state">{{ order.state }}</span>
+      </div>
+
+      <div class="order-address">
+        {{ order.address.street }} - {{ order.address.city }}
+      </div>
+
+      <table class="products-table">
+        <thead>
+          <tr>
+            <th>Producto</th>
+            <th>Cantidad</th>
+            <th>Precio</th>
+            <th>Subtotal</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (product of order.products; track product.id) {
+            <tr>
+              <td>{{ product.name }}</td>
+              <td>{{ product.quantity }}</td>
+              <td>{{ product.price }} €</td>
+              <td>{{ (product.quantity * product.price) | number:'1.2-2' }} €</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+
+      <div class="order-total">
+        Total: <strong>{{ getTotal(order) | number:'1.2-2' }} €</strong>
+      </div>
+
+    </div>
+  }
+
+</div>

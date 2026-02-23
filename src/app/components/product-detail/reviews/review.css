@@ -1,0 +1,27 @@
+.review-item {
+  max-width: 1200px;      
+  margin: 0.5rem auto 1rem 20rem;
+  background: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgb(0 0 0 / 0.1);
+  padding: 1rem 1.2rem;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.review-item:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 12px rgb(0 0 0 / 0.15);
+}
+
+.review-user {
+  font-weight: 700;
+  color: #2f3e2f;
+  margin-bottom: 0.4rem;
+}
+
+.review-comment {
+  font-size: 1rem;
+  line-height: 1.4;
+  color: #4a4a4a;
+  white-space: pre-line;
+}

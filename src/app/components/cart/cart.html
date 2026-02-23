@@ -23,19 +23,24 @@
     </div>
 
     <div class="checkout-form">
-      <input type="email" placeholder="Email" [(ngModel)]="email">
-      <input type="number" placeholder="Address ID" [(ngModel)]="addressId">
+        <div class="cart-summary">
+          <span>Total: {{ total() | currency }}</span>
+          <p>
+          @if (!loggedIn() && sinDatosEnvio()) {
+            <button pButton type="button" label="Introducir datos de envio" class="p-button-success" (click)="recogerDatosEnvio()" [disabled]="processing()"> </button>
+          } @else if (!loggedIn() && !sinDatosEnvio()) {
+            <button pButton type="button" label="Comprar" class="p-button-success" (click)="checkoutFast()" [disabled]="processing()"> </button>
+          } @else {
+            <button pButton type="button" label="Comprar" class="p-button-success" (click)="checkout()" [disabled]="processing()"> </button>
+          }
+          @if (processing()) {
+            <span class="loading-text">Procesando...</span>
+          }
+          @if (message()) {
+            <div class="toast">{{ message() }}</div>                
+          }
+        </div>
 
-      <div class="cart-summary">
-        <span>Total: {{ total() | currency }}</span>
-        <button pButton type="button" label="Comprar" class="p-button-success" (click)="checkout()" [disabled]="processing()"> </button>
-        @if (processing()) {
-          <span class="loading-text">Procesando...</span>
-        }
-        @if (message()) {
-          <div class="toast">{{ message() }}</div>                
-        }
-      </div>
     </div>
   }
 </div>

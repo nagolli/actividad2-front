@@ -1,0 +1,41 @@
+.orders-container {
+  max-width: 900px;
+  margin: auto;
+}
+
+.order-card {
+  border: 1px solid #ddd;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+  border-radius: 8px;
+}
+
+.order-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+
+.state {
+  font-weight: bold;
+  text-transform: capitalize;
+}
+
+.products-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+}
+
+.products-table th,
+.products-table td {
+  border: 1px solid #eee;
+  padding: 0.5rem;
+  text-align: center;
+}
+
+.order-total {
+  text-align: right;
+  margin-top: 1rem;
+  font-size: 1.1rem;
+}
