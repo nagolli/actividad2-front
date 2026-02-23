@@ -96,7 +96,7 @@ export class UserService {
                     addressId: addressId
                 }
             ],
-            roles: roles.map(r => { return { id: r } })
+            roles: roles.map(r => { return { roleId: r } })
         };
         return this.http.post(`${environment.apiUrl}/employee`, body).pipe(
             map(() => true),
