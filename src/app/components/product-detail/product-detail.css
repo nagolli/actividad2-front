@@ -1,7 +1,7 @@
 .product-detail-wrapper {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 3rem 2rem;
+  padding: 0rem 2rem;
 }
 
 .product-detail {
@@ -161,6 +161,6 @@
   color: white;
   padding: 10px 20px;
   border-radius: 4px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
   z-index: 1000;
 }
